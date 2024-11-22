@@ -35,7 +35,7 @@
             );
           } else {
             this.$store.commit("modificarIdUsuario", this.idUser);
-            //this.$store.commit("cargarTransacciones");
+            this.$store.commit("cargarTransacciones");
             this.$router.push("/Home");
           }
         }
