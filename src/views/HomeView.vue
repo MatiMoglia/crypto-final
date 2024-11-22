@@ -1,18 +1,26 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Bienvenido, {{ idUsuario }}</h1>
+    <p>Tu ID de usuario es: {{ idUsuario }}</p>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import { mapState } from "vuex";
 
 export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld
-  }
-}
+  name: "Home",
+  computed: {
+    ...mapState({
+      idUsuario: (state) => state.idUser, // Accede al estado de Vuex
+    }),
+  },
+};
 </script>
+
+<style scoped>
+.home {
+  text-align: center;
+  margin-top: 20px;
+}
+</style>
