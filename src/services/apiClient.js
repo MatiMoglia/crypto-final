@@ -22,4 +22,7 @@ export default {
     eliminarTransaccion(id) {
         return apiCLient.delete(`/transactions/${id}`);
     },
+    getWalletBalance(idUsuario) {
+        return apiCLient.get(`/transactions?q={"user_id": "${idUsuario}"}`);
+    },
 };
