@@ -1,28 +1,32 @@
 import axios from "axios";
+import store from "@/store";
 
-const apiCLient = axios.create({
-    baseURL: "https://labor3-d60e.restdb.io/rest/",
-    headers: { 'x-apikey': "64a2e9bc86d8c525a3ed8f63" },
+const clienteAPI = axios.create({
+    baseURL: "https://laboratorio3-f36a.restdb.io/rest",
+    headers: { 'x-apikey': "60eb09146661365596af552f" },
 });
 
 export default {
-    getTransacciones(idUsuario) {
-        return apiCLient.get(`/transactions?q={"user_id": "${idUsuario}"}`);
+    getTransactions(idUser) {
+        return clienteAPI.get(`/transactions?q={"user_id": "${idUser}"}`);
     },
-    getTransaccionesById(id) {
-        return apiCLient.get(`/transactions/${id}`);
+    getTransactionsById(id) {
+        return clienteAPI.get(`/transactions/${id}`);
     },
-
-    ingresarNuevaTransaccion(nuevaTransaccion) {
-        return apiCLient.post("/transactions", nuevaTransaccion);
+    newTransaction(buySale) {
+        return clienteAPI.post("/transactions", buySale);
     },
-    modificarTransaccion(id, transaccionEditada) {
-        return apiCLient.put(`/transactions/${id}`, transaccionEditada);
+    editTransaction(id, transactionModify) {
+        return clienteAPI.patch(`/transactions/${id}`, transactionModify)
+        .then(response => {
+            const updatedTransaction = response.data;
+            store.commit("updateTransaction", updatedTransaction);
+        });
     },
-    eliminarTransaccion(id) {
-        return apiCLient.delete(`/transactions/${id}`);
-    },
-    getWalletBalance(idUsuario) {
-        return apiCLient.get(`/transactions?q={"user_id": "${idUsuario}"}`);
+    deleteTransaction(id) {
+        return clienteAPI.delete(`/transactions/${id}`)
+        .then(() => {
+            store.commit("deleteTransaction", id);
+        });
     },
 };

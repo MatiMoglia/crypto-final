@@ -87,7 +87,7 @@ export default {
       } else {
         this.buySale.datetime = new Date();
         this.buySale.datetime.setHours(this.buySale.datetime.getHours() - 3);
-        ClientApi.ingresarNuevaTransaccion(this.buySale)
+        ClientApi.newTransaction(this.buySale)
           .then(() => {
             console.log("Compra realizada con éxito");
             this.$store.commit("insertTransaction");

@@ -1,29 +1,49 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
-import WalletView from '../views/WalletView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import Login from '../views/LoginView.vue';
+import Transactions from '../views/Transactions.vue';
+import History from '../views/History.vue';
+//import Modify from  '../views/ModifyView.vue';
+//import CurrentStatus from '../views/CurrentStatus.vue';
+//import Analysis from '../views/InvestmentAnalysis.vue';
 
 const routes = [
   {
-    path: '/home',
-    name: 'home',
-    component: HomeView
-  },
-  {
     path: '/',
-    name: 'login',
-    component: LoginView
+    name: 'Login',
+    component: Login,
   },
   {
-    path: "/wallet",
-    name: "Wallet",
-    component: WalletView,
+    path: '/transactions',
+    name: 'Transactions',
+    component: Transactions,
   },
-]
+  {
+    path: '/history',
+    name: 'History',
+    component: History,
+  },
+  /*
+  {
+    path: '/modify',
+    name: 'Modify',
+    component: Modify,
+  },*/
+  /*{
+    path: '/status',
+    name: 'CurrentStatus',
+    component: CurrentStatus,
+  },*/
+  /*
+  {
+    path: '/analysis',
+    name: 'Analysis',
+    component: Analysis,
+  },*/
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
