@@ -8,25 +8,20 @@
     <PurchaseForm />
     <hr />
     <h2>Registrar Venta de Criptomonedas</h2>
-    <sale-form />
-
+    <SaleForm />
     <hr />
-
-    <sales-history :userId="idUsuario" />
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import SaleForm from "@/components/SaleForm.vue";
-import SalesHistory from "@/components/SaleHistory.vue";
 import PurchaseForm from "@/components/PurchaseForm.vue";
 export default {
   name: "Home",
   components: {
     SaleForm,
-    SalesHistory,
-    PurchaseForm  
+    PurchaseForm,
   },
   computed: {
     ...mapState({
@@ -35,7 +30,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .home {

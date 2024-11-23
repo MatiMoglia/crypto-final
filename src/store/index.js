@@ -6,6 +6,9 @@ export default createStore({
   },
   getters: {
     getIdUser: (state) => state.idUser,
+    getCurrentStatus(state) {
+      return state.wallet || []; 
+    },
   },
   mutations: {
     modificarIdUsuario(state, idUser) {

@@ -1,9 +1,9 @@
 <template>
-    <div class="sale">
+    <div class="purchase">
         <form action="#" method="post">
             <div class="criptos">
                 <div class="select">
-                    <select id="crypto-select" v-model="buySale.crypto_code" @change="getAgencies(buySale.crypto_code)">
+                    <select id="standard-select" v-model="buySale.crypto_code" @change="getAgencies(buySale.crypto_code)">
                         <option value="" disabled selected hidden>CRIPTOMONEDA</option>
                         <option value="btc">BITCOIN</option>
                         <option value="eth">ETHEREUM</option>
@@ -16,20 +16,19 @@
 
                 <div class="select">
                     <select 
-                        id="agency-select" 
+                        id="standard-select" 
                         v-model="selectedAgency" 
                         @change="enableAmount()" 
                         :disabled="selectAgenciesDisabled">
                         <option value="" disabled selected hidden>SELECCIONAR AGENCIA</option>
-                        <option v-for="agency in agencies" 
-                                :key="agency.agency" 
-                                :value="agency">
+                        <option v-for="agency in agencies" :key="agency.agency" :value="agency">
                             {{ agency.agency.toUpperCase() + " - Precio: " + agency.values.totalBid }}
                         </option>
                     </select>
                     <i></i>
                 </div>
             </div>
+
             <div class="cantVenta">
                 <input 
                     type="number" 
@@ -95,20 +94,21 @@ export default {
         saleCripto() {
             this.loading = true;
 
+            // Validaciones y mensajes
             if (!this.buySale.crypto_amount) {
-                this.$toast.error("Ingrese la cantidad a vender");
+                alert("Ingrese la cantidad a vender");
             } else if (!parseFloat(this.buySale.crypto_amount)) {
-                this.$toast.error("Debe ingresar un valor numérico");
+                alert("Debe ingresar un valor numérico");
             } else if (parseFloat(this.buySale.crypto_amount) <= 0) {
-                this.$toast.error("La cantidad debe ser mayor a 0");
+                alert("La cantidad debe ser mayor a 0");
             } else if (!this.buySale.money) {
-                this.$toast.error("El campo de importe no debe estar vacío");
+                alert("El campo de importe no debe estar vacío");
             } else if (!parseFloat(this.buySale.money)) {
-                this.$toast.error("Debe ingresar un valor numérico en importe");
+                alert("Debe ingresar un valor numérico en importe");
             } else if (parseFloat(this.buySale.money) <= 0) {
-                this.$toast.error("El importe debe ser mayor a 0");
+                alert("El importe debe ser mayor a 0");
             } else if (!this.buySale.crypto_code) {
-                this.$toast.error("Debe seleccionar una criptomoneda");
+                alert("Debe seleccionar una criptomoneda");
             } else {
                 const cryptoBalance = this.getAmountInWallet(this.buySale.crypto_code);
 
@@ -118,20 +118,22 @@ export default {
 
                     ClientApi.newTransaction(this.buySale)
                         .then(() => {
-                            this.$toast.info("Venta realizada con éxito");
+                            alert("Venta realizada con éxito");
                             this.$store.commit("insertTransaction");
                             this.resetForm();
                         })
                         .catch(() => {
-                            this.$toast.error("Error al realizar la venta");
+                            alert("Error al realizar la venta");
                         })
                         .finally(() => {
                             this.loading = false;
                         });
                 } else {
-                    this.$toast.error("No tienes suficientes criptomonedas para realizar esta venta");
+                    alert("No tienes suficientes criptomonedas para realizar esta venta");
                 }
             }
+
+            this.loading = false; // Asegura que loading se desactive
         },
         getAgencies(crypto) {
             CryptoApi.getAgenciesInformation(crypto)
@@ -142,7 +144,7 @@ export default {
                     this.selectAgenciesDisabled = false;
                 })
                 .catch(() => {
-                    this.$toast.error("Error al obtener las agencias");
+                    alert("Error al obtener las agencias");
                 });
         },
         enableAmount() {
@@ -170,4 +172,47 @@ export default {
 </script>
 
 <style scoped>
+.purchase {
+    margin: 20px;
+}
+.criptos {
+    display: flex;
+    gap: 10px;
+}
+.select {
+    width: 200px;
+}
+.cantVenta, .pagoVenta {
+    margin-top: 20px;
+}
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+}
+.btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+.btn:hover {
+    background-color: #45a049;
+}
+.loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 </style>

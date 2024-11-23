@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
+import WalletView from '../views/WalletView.vue'
 
 const routes = [
   {
@@ -14,10 +15,10 @@ const routes = [
     component: LoginView
   },
   {
-    path: '/about',
-    name: 'about',
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
+    path: "/wallet",
+    name: "Wallet",
+    component: WalletView,
+  },
 ]
 
 const router = createRouter({
