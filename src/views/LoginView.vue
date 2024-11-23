@@ -34,9 +34,9 @@
               "Error! El ID de usuario no debe contener más de 10 caracteres"
             );
           } else {
-            this.$store.commit("modificarIdUsuario", this.idUser);
-            this.$store.commit("cargarTransacciones");
-            this.$router.push("/Home");
+            this.$store.commit("newUser", this.idUser);
+            this.$store.commit("insertTransaction");
+            this.$router.push("/transactions");
           }
         }
       }

@@ -2,8 +2,8 @@
   <div>
     <nav>
       <router-link to="/">Login</router-link> |
-      <router-link to="/home">Home</router-link> |
-      <router-link to="/wallet">Wallet</router-link> |
+      <router-link to="/transactions">transaction</router-link> |
+      <router-link to="/history">History</router-link> |
     </nav>
     <router-view></router-view>
   </div>
