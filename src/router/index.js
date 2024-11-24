@@ -3,7 +3,7 @@ import Login from '../views/LoginView.vue';
 import Transactions from '../views/Transactions.vue';
 import History from '../views/History.vue';
 import Modify from  '../views/ModifyView.vue';
-//import CurrentStatus from '../views/CurrentStatus.vue';
+import CurrentStatus from '../views/CurrentStatus.vue';
 //import Analysis from '../views/InvestmentAnalysis.vue';
 
 const routes = [
@@ -28,12 +28,11 @@ const routes = [
     name: 'Modify',
     component: Modify,
   },
-  /*{
+  {
     path: '/status',
     name: 'CurrentStatus',
     component: CurrentStatus,
-  },*/
-  /*
+  },/*
   {
     path: '/analysis',
     name: 'Analysis',
