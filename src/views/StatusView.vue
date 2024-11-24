@@ -1,32 +1,38 @@
 <template>
-    <div class="body">
-      <Navbar/>
-      <div class="container">
-        <div v-if="loading" class="loader"></div>
-        <table v-if="!loading">
-          <thead>
-            <tr>
-              <th>CRIPTOMONEDA</th>
-              <th>CANTIDAD</th>
-              <th>DINERO</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(coin, index) in wallet.filter((coin) => coin.crypto_amount > 0)" :key="coin._id">
-              <td>{{ nameCriptos(coin.crypto_code) }}</td>
-              <td>{{ coin.crypto_amount }}</td>
-              <td>{{ currentMoney[index] }}</td>
-            </tr>
-          </tbody>
+  <div class="body">
+    <Navbar />
+    <div class="container">
+      <div v-if="loading" class="loader"></div>
+      <table v-if="!loading">
+        <thead>
+          <tr>
+            <th>CRIPTOMONEDA</th>
+            <th>CANTIDAD</th>
+            <th>DINERO</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+            v-for="(coin, index) in wallet.filter((coin) => coin.crypto_amount > 0)" 
+            :key="coin._id"
+          >
+            <td>{{ nameCriptos(coin.crypto_code) }}</td>
+            <td>{{ coin.crypto_amount }}</td>
+            <td>{{ currentMoney[index] }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
           <tr class="total">
             <td></td>
             <th>TOTAL</th>
             <td>{{ "$ " + actualTotalMoney.toFixed(2) }}</td>
           </tr>
-        </table>
-      </div>
+        </tfoot>
+      </table>
     </div>
+  </div>
 </template>
+
   
 <script>
   import { mapGetters } from 'vuex';

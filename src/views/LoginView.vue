@@ -56,22 +56,29 @@ export default {
 </script>
 
 <style scoped>
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Para ocupar toda la altura de la pantalla */
+  background: none; /* El fondo ya se maneja en .cyber-bg */
+}
+
 .cyber-bg {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('@/assets/criptomoneda-79md0ju7us1a1cwu.jpg') no-repeat center center/cover;
   z-index: -1;
 }
 
 .wrapper {
   max-width: 400px;
-  margin: auto;
+  width: 90%; /* Asegúrate de que sea responsive */
   padding: 30px;
   background: rgba(0, 0, 0, 0.8);
-  border: 2px solid #d4af37; /* Color dorado */
+  border: 2px solid #d4af37;
   border-radius: 15px;
   box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.8);
   color: white;
@@ -79,8 +86,8 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transform: translateY(50%);
 }
+
 
 .logo-container {
   display: flex;
@@ -89,12 +96,11 @@ export default {
 }
 
 .logo {
-  width: 120px; 
-  height: 120px;
+  width: 150px; 
+  height: 150px;
   border-radius: 50%; 
   object-fit: cover;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid #d4af37; 
+  border: 2px solid #d4af37; 
 }
 
 .name {

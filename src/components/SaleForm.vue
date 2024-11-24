@@ -1,65 +1,75 @@
 <template>
-    <div class="purchase">
+    <div class="container">
+      <div class="sale">
+        <h2>Venta</h2>
         <form action="#" method="post">
-            <div class="criptos">
-                <div class="select">
-                    <select id="standard-select" v-model="buySale.crypto_code" @change="getAgencies(buySale.crypto_code)">
-                        <option value="" disabled selected hidden>CRIPTOMONEDA</option>
-                        <option value="btc">BITCOIN</option>
-                        <option value="eth">ETHEREUM</option>
-                        <option value="usdt">THETHER</option>
-                        <option value="usdc">USD COIN</option>
-                        <option value="dai">DAI</option>
-                    </select>
-                    <i></i>
-                </div>
-
-                <div class="select">
-                    <select 
-                        id="standard-select" 
-                        v-model="selectedAgency" 
-                        @change="enableAmount()" 
-                        :disabled="selectAgenciesDisabled">
-                        <option value="" disabled selected hidden>SELECCIONAR AGENCIA</option>
-                        <option v-for="agency in agencies" :key="agency.agency" :value="agency">
-                            {{ agency.agency.toUpperCase() + " - Precio: " + agency.values.totalBid }}
-                        </option>
-                    </select>
-                    <i></i>
-                </div>
+          <div class="criptos">
+            <div class="select">
+              <select
+                id="standard-select"
+                v-model="buySale.crypto_code"
+                @change="getAgencies(buySale.crypto_code)"
+              >
+                <option value="" disabled selected hidden>CRIPTOMONEDA</option>
+                <option value="btc">BITCOIN</option>
+                <option value="eth">ETHEREUM</option>
+                <option value="usdt">THETHER</option>
+                <option value="usdc">USD COIN</option>
+                <option value="dai">DAI</option>
+              </select>
             </div>
-
-            <div class="cantVenta">
-                <input 
-                    type="number" 
-                    min="0" 
-                    id="cantSale" 
-                    name="cantBuy" 
-                    v-model="buySale.crypto_amount" 
-                    placeholder="CANTIDAD A VENDER" 
-                    required 
-                    :disabled="setAmountDisabled"
-                    @input="calculateAmount()">
+            <div class="select">
+              <select
+                id="standard-select"
+                v-model="selectedAgency"
+                @change="enableAmount()"
+                :disabled="selectAgenciesDisabled"
+              >
+                <option value="" disabled selected hidden>SELECCIONAR AGENCIA</option>
+                <option
+                  v-for="agency in agencies"
+                  :key="agency.agency"
+                  :value="agency"
+                >
+                  {{ agency.agency.toUpperCase() + " - Precio: " + agency.values.totalAsk }}
+                </option>
+              </select>
             </div>
-
-            <div class="pagoVenta">
-                <input 
-                    type="number" 
-                    id="amount" 
-                    name="amount" 
-                    v-model="buySale.money" 
-                    placeholder="IMPORTE $" 
-                    required 
-                    disabled>
+          </div>
+          <div class="input-group">
+            <input
+                type="number"
+                min="0"
+                id="cantSale"
+                name="cantSale"
+                v-model="buySale.crypto_amount"
+                placeholder="Cantidad a Vender"
+                required
+                :disabled="setAmountDisabled"
+                @input="calculateAmount()"
+                class="small-input"
+            />
             </div>
-
-            <button class="btn" type="submit" @click.prevent="saleCripto">
-                <span v-if="!loading">VENDER</span>
-                <div v-if="loading" class="loader"></div>
-            </button>
+            <div class="input-group">
+            <input
+                type="number"
+                id="amount"
+                name="amount"
+                v-model="buySale.money"
+                placeholder="Importe $"
+                required
+                disabled
+                class="small-input"
+            />
+            </div>
+          <button class="btn" type="submit" @click.prevent="saleCripto">
+            <span v-if="!loading">Vender</span>
+            <div v-if="loading" class="loader"></div>
+          </button>
         </form>
+      </div>
     </div>
-</template>
+</template>  
 
 <script>
 import ClientApi from "@/services/apiClient";
@@ -94,7 +104,6 @@ export default {
         saleCripto() {
             this.loading = true;
 
-            // Validaciones y mensajes
             if (!this.buySale.crypto_amount) {
                 alert("Ingrese la cantidad a vender");
             } else if (!parseFloat(this.buySale.crypto_amount)) {
@@ -133,7 +142,7 @@ export default {
                 }
             }
 
-            this.loading = false; // Asegura que loading se desactive
+            this.loading = false; 
         },
         getAgencies(crypto) {
             CryptoApi.getAgenciesInformation(crypto)
@@ -172,47 +181,104 @@ export default {
 </script>
 
 <style scoped>
-.purchase {
-    margin: 20px;
+.container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding: 20px;
+  background-color: #1a1a1a; 
+  color: #f4d03f; 
 }
-.criptos {
-    display: flex;
-    gap: 10px;
+
+.sale {
+  background-color: #2b2b2b;
+  border: 1px solid #f4d03f;
+  border-radius: 10px;
+  padding: 20px;
+  width: 350px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  text-align: center;
 }
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #f4d03f;
+}
+
+.criptos,
+.input-group {
+  margin-bottom: 20px;
+}
+
 .select {
-    width: 200px;
+  width: 100%;
 }
-.cantVenta, .pagoVenta {
-    margin-top: 20px;
+
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #f4d03f;
+  border-radius: 5px;
+  background-color: #1a1a1a;
+  color: #f4d03f;
+  font-size: 14px;
 }
+
 input {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #f4d03f;
+  border-radius: 5px;
+  background-color: #1a1a1a;
+  color: #f4d03f;
+}
+.input-group {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center; 
+}
+
+.small-input {
+  width: 200px; 
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #f4d03f;
+  border-radius: 5px;
+  background-color: #1a1a1a;
+  color: #f4d03f;
+  text-align: center;
 }
 .btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    font-size: 16px;
+  background-color: #f4d03f;
+  color: #1a1a1a;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
 }
+
 .btn:hover {
-    background-color: #45a049;
+  background-color: #d4ac0d;
 }
+
 .loader {
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #3498db;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin 2s linear infinite;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #f4d03f;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 2s linear infinite;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

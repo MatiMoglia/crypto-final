@@ -1,46 +1,74 @@
 <template>
+  <div class="container">
     <div class="purchase">
-        <form action="#" method="post">
-            <div class="criptos">
-                <div class="select">
-                    <select id="standard-select" v-model="buySale.crypto_code" @change="getAgencies(buySale.crypto_code)">
-                        <option value="" disabled selected hidden>CRIPTOMONEDA</option>
-                        <option value="btc">BITCOIN</option>
-                        <option value="eth">ETHEREUM</option>
-                        <option value="usdt">THETER</option>
-                        <option value="usdc">USD COIN</option>
-                        <option value="dai">DAI</option>
-                    </select>
-                    <i></i>
-                </div>
-                <div class="select">
-                    <select
-                        id="standard-select"
-                        v-model="selectedAgency"
-                        @change="enableAmount()"
-                        :disabled="selectAgenciesDisabled"
-                    >
-                        <option value="" disabled selected hidden>SELECCIONAR AGENCIA</option>
-                        <option v-for="agency in agencies" :key="agency.agency" :value="agency">
-                            {{ agency.agency.toUpperCase() + " - Precio: " + agency.values.totalAsk }}
-                        </option>
-                    </select>
-                    <i></i>
-                </div>
-            </div>
-            <div class="cantCompra">
-                <input type="number" min="0" id="cantBuy" name="cantBuy" v-model="buySale.crypto_amount" placeholder="CANTIDAD A COMPRAR" required :disabled="setAmountDisabled"
-                @input="calculateAmount()">
-            </div>
-            <div class="pagoCompra">
-                <input type="number" id="amount" name="amount" v-model="buySale.money" placeholder="IMPORTE $" required disabled>
-            </div>
-            <button class="btn" type="submit" @click.prevent="buyCripto">
-                <span v-if="!loading">COMPRAR</span>
-                <div v-if="loading" class="loader"></div>
-            </button>
-        </form>
+      <h2>Compra</h2>
+      <form action="#" method="post">
+        <div class="criptos">
+          <div class="select">
+            <select
+              id="standard-select"
+              v-model="buySale.crypto_code"
+              @change="getAgencies(buySale.crypto_code)"
+            >
+              <option value="" disabled selected hidden>CRIPTOMONEDA</option>
+              <option value="btc">BITCOIN</option>
+              <option value="eth">ETHEREUM</option>
+              <option value="usdt">THETER</option>
+              <option value="usdc">USD COIN</option>
+              <option value="dai">DAI</option>
+            </select>
+          </div>
+          <div class="select">
+            <select
+              id="standard-select"
+              v-model="selectedAgency"
+              @change="enableAmount()"
+              :disabled="selectAgenciesDisabled"
+            >
+              <option value="" disabled selected hidden>SELECCIONAR AGENCIA</option>
+              <option
+                v-for="agency in agencies"
+                :key="agency.agency"
+                :value="agency"
+              >
+                {{ agency.agency.toUpperCase() + " - Precio: " + agency.values.totalAsk }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group">
+          <input
+            type="number"
+            min="0"
+            id="cantBuy"
+            name="cantBuy"
+            v-model="buySale.crypto_amount"
+            placeholder="Cantidad a Comprar"
+            required
+            :disabled="setAmountDisabled"
+            @input="calculateAmount()"
+            class="small-input"
+          />
+        </div>
+        <div class="input-group">
+          <input
+            type="number"
+            id="amount"
+            name="amount"
+            v-model="buySale.money"
+            placeholder="Importe $"
+            required
+            disabled
+            class="small-input"
+          />
+        </div>
+        <button class="btn" type="submit" @click.prevent="buyCripto">
+          <span v-if="!loading">Comprar</span>
+          <div v-if="loading" class="loader"></div>
+        </button>
+      </form>
     </div>
+  </div>
 </template>
 
 <script>
@@ -127,47 +155,105 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding: 20px;
+  background-color: #1a1a1a; 
+  color: #f4d03f; 
+}
+
 .purchase {
-    margin: 20px;
+  background-color: #2b2b2b;
+  border: 1px solid #f4d03f;
+  border-radius: 10px;
+  padding: 20px;
+  width: 350px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  text-align: center;
 }
-.criptos {
-    display: flex;
-    gap: 10px;
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #f4d03f;
 }
+
+.criptos,
+.input-group {
+  margin-bottom: 20px;
+}
+
 .select {
-    width: 200px;
+  width: 100%;
 }
-.cantCompra, .pagoCompra {
-    margin-top: 20px;
+
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #f4d03f;
+  border-radius: 5px;
+  background-color: #1a1a1a;
+  color: #f4d03f;
+  font-size: 14px;
 }
+
 input {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #f4d03f;
+  border-radius: 5px;
+  background-color: #1a1a1a;
+  color: #f4d03f;
 }
+.input-group {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center; 
+}
+.small-input {
+  width: 200px; 
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #f4d03f;
+  border-radius: 5px;
+  background-color: #1a1a1a;
+  color: #f4d03f;
+  text-align: center;
+}
+
+
 .btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    font-size: 16px;
+  background-color: #f4d03f;
+  color: #1a1a1a;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
 }
+
 .btn:hover {
-    background-color: #45a049;
+  background-color: #d4ac0d;
 }
+
 .loader {
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #3498db;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin 2s linear infinite;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #f4d03f;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 2s linear infinite;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
