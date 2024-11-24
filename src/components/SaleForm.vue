@@ -1,7 +1,7 @@
 <template>
     <div class="container">
       <div class="sale">
-        <h2>Venta</h2>
+        <h2>VENTA</h2>
         <form action="#" method="post">
           <div class="criptos">
             <div class="select">
@@ -111,13 +111,13 @@ export default {
             } else if (parseFloat(this.buySale.crypto_amount) <= 0) {
                 alert("La cantidad debe ser mayor a 0");
             } else if (!this.buySale.money) {
-                alert("El campo de importe no debe estar vacío");
+                alert("El campo de Importe no debe estar vacío");
             } else if (!parseFloat(this.buySale.money)) {
                 alert("Debe ingresar un valor numérico en importe");
             } else if (parseFloat(this.buySale.money) <= 0) {
                 alert("El importe debe ser mayor a 0");
             } else if (!this.buySale.crypto_code) {
-                alert("Debe seleccionar una criptomoneda");
+                alert("Seleccione una Criptomoneda...");
             } else {
                 const cryptoBalance = this.getAmountInWallet(this.buySale.crypto_code);
 
@@ -186,7 +186,6 @@ export default {
   justify-content: space-evenly;
   align-items: flex-start;
   padding: 20px;
-  background-color: #1a1a1a; 
   color: #f4d03f; 
 }
 

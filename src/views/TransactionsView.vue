@@ -1,21 +1,19 @@
 <template>
-    <div class="body">
-        <Navbar/>
-        <div class="commerce">
-            <div class="btnP">
-                <h2>COMPRAR CRIPTOS</h2>
-                <div class="form"> 
+   <Navbar />
+   <div class="trade">
+        <div class="header">
+            <img class="logo" src="@/assets/logo.png" alt="Crypto Trade M&M Logo" />
+            <h1>CRYPTO-TRADE M&M</h1>
+        </div>
+        <div class="conteiners">
+                <div class="form">
                     <FormPurchase />
                 </div>
-            </div>
-            <div class="btnS">
-                <h2>VENDER CRIPTOS</h2>
-                <div class="fom">
+                <div class="form">
                     <FormSale />
                 </div>
-            </div>
         </div>
-    </div>
+   </div>
 </template>
 
 <script>
@@ -31,3 +29,53 @@
         },
     };
 </script>
+<style scoped>
+body {
+  margin: 0;
+}
+.trade {
+    background: rgba(44, 42, 42, 0.8); 
+}
+.conteiners {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.header {
+  margin-top: 50px;
+  text-align: center;
+  margin-bottom: 20px;
+  padding-top: 20px;
+}
+
+.logo {
+  width: 150px; 
+  height: 150px;
+  border-radius: 50%; 
+  object-fit: cover;
+  border: 2px solid #d4af37; 
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #f4d03f;
+  font-family: 'Arial', sans-serif;
+  margin-bottom: 10px;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #f4d03f;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+</style>

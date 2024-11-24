@@ -19,7 +19,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: white;
-  display: flex;
   justify-content: center;
   align-items: center;
 }

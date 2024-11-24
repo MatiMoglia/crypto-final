@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="purchase">
-      <h2>Compra</h2>
+      <h2>COMPRA</h2>
       <form action="#" method="post">
         <div class="criptos">
           <div class="select">
@@ -160,7 +160,6 @@ export default {
   justify-content: space-evenly;
   align-items: flex-start;
   padding: 20px;
-  background-color: #1a1a1a; 
   color: #f4d03f; 
 }
 
