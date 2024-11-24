@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../views/LoginView.vue';
-import Transactions from '../views/Transactions.vue';
+import Transactions from '../views/TransactionsView.vue';
 import History from '../views/History.vue';
 import Modify from  '../views/ModifyView.vue';
-import CurrentStatus from '../views/CurrentStatus.vue';
+import Status from '../views/StatusView.vue';
 //import Analysis from '../views/InvestmentAnalysis.vue';
 
 const routes = [
@@ -30,8 +30,8 @@ const routes = [
   },
   {
     path: '/status',
-    name: 'CurrentStatus',
-    component: CurrentStatus,
+    name: 'Status',
+    component: Status,
   },/*
   {
     path: '/analysis',
