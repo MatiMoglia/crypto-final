@@ -1,41 +1,150 @@
 <template>
-    <div class="login">
-     <div class="wrapper">
-        <div class="text-center mt-4 name">
-            Billetera de Cryptomonedas
-        </div>
-        <form class="p-3 mt-3">
-            <div class="form-field d-flex align-items-center">
-                <span class="far fa-user"></span>
-                <input type="text" name="idUsuario" v-model="idUser" id="idUsuario" placeholder="ID">
-            </div>
-            <button class="btn mt-3" @click="enter">LOGIN</button>
-        </form>
+  <div class="login">
+    <div class="cyber-bg"></div>
+    <div class="wrapper" data-aos="fade-up">
+      <div class="logo-container">
+        <img src="@/assets/logo.png" alt="Logo" class="logo">
       </div>
+      <div class="text-center mt-4 name">
+        Billetera de Cryptomonedas
+      </div>
+      <form class="p-3 mt-3">
+        <div class="form-field d-flex align-items-center">
+          <i class="fas fa-user-circle"></i>
+          <input 
+            type="text" 
+            name="idUsuario" 
+            v-model="idUser" 
+            id="idUsuario" 
+            placeholder="Ingrese su ID"
+          />
+        </div>
+        <button class="btn btn-login mt-4" @click.prevent="enter">LOGIN</button>
+      </form>
     </div>
-  </template>
-  
-  <script>
-  
-  export default {
-    name: 'Login',
-    data() {
-      return {
-        idUser: "",
-      };
-    },
-    methods: {
-      enter() {
-        if (this.idUser.trim() === "") {
-          alert("Error: ¡El campo no debe estar vacío!"); // O manejar con console.error
-        } else if (this.idUser.length > 10) {
-          alert("Error: ¡El ID de usuario no debe contener más de 10 caracteres!");
-        } else {
-          this.$store.commit("newUser", this.idUser);
-          this.$store.commit("insertTransaction");
-          this.$router.push("/transactions");
-        }
+  </div>
+</template>
+
+<script>
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+export default {
+  name: "Login",
+  data() {
+    return {
+      idUser: "",
+    };
+  },
+  methods: {
+    enter() {
+      if (this.idUser.trim() === "") {
+        alert("Error: ¡El campo no debe estar vacío!"); 
+      } else if (this.idUser.length > 10) {
+        alert("Error: ¡El ID de usuario no debe contener más de 10 caracteres!");
+      } else {
+        this.$store.commit("newUser", this.idUser);
+        this.$store.commit("insertTransaction");
+        this.$router.push("/transactions");
       }
     }
-  };
-  </script>
+  },
+  mounted() {
+    AOS.init(); 
+  },
+};
+</script>
+
+<style scoped>
+.cyber-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('@/assets/criptomoneda-79md0ju7us1a1cwu.jpg') no-repeat center center/cover;
+  z-index: -1;
+}
+
+.wrapper {
+  max-width: 400px;
+  margin: auto;
+  padding: 30px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #d4af37; /* Color dorado */
+  border-radius: 15px;
+  box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.8);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(50%);
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 120px; 
+  height: 120px;
+  border-radius: 50%; 
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #d4af37; 
+}
+
+.name {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #d4af37;
+  text-transform: uppercase;
+}
+
+.form-field {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #d4af37; 
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.form-field input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 1rem;
+  padding-left: 10px;
+}
+
+.btn-login {
+  margin-top: 25px;
+  width: 100%;
+  padding: 12px;
+  background: #d4af37; 
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+  background: #b89030; 
+}
+
+i {
+  font-size: 1.2rem;
+  color: #d4af37; 
+  margin-right: 10px;
+}
+</style>

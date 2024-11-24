@@ -1,26 +1,27 @@
 <template>
-  <div>
-    <nav>
-      <router-link to="/">Login</router-link> |
-      <router-link to="/transactions">transaction</router-link> |
-    </nav>
+  <div id="app">
     <router-view></router-view>
   </div>
 </template>
+
 <script>
-  export default  {
-    data() {
-      return {};
-    }
+export default {
+  data() {
+    return {};
   }
+}
 </script>
-<style>
+
+<style scoped>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 nav {
@@ -29,10 +30,16 @@ nav {
 
 nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #f1c40f; 
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #d4af37; 
 }
 
 nav a.router-link-exact-active {
-  color: #42b983;
+  color: #f39c12; 
 }
 </style>
