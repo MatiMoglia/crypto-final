@@ -1,59 +1,53 @@
 <template>
-  <div class="body">
-      <Navbar/>
+    <Navbar />
+    <div class="history-color">
       <div class="history">
-          <div class="container">
-              <div v-if="loading" class="loader"></div>
-              <table v-if="!loading">
-                  <thead>
-                      <tr>
-                          <th>CRIPTOMONEDA</th>
-                          <th>CANTIDAD</th>
-                          <th>PRECIO</th>
-                          <th>TIPO DE OPERACION</th>
-                          <th>FECHA DE OPERACION</th>
-                          <th>EDICION | BORRADO</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr 
-                          v-for="transaction in sortedTransactions" 
-                          :key="transaction._id" :class="{ selected: selectRow === transaction._id }">
-                          <td class="row">{{ nameCriptos(transaction.crypto_code) }}</td>
-                          <td class="row">{{ transaction.crypto_amount }}</td>
-                          <td class="row"> $ {{ transaction.money }}</td>
-                          <td class="row">{{ typeAction(transaction.action) }}</td>
-                          <td class="row">{{ time(transaction.datetime) }}</td>
-                          <td>
-                            <router-link
-                              :to="{
-                                  name: 'Modify',
-                                  query: {
-                                      id: selectRow,
-                                  },
-                              }"
-                            >
-                              <button 
-                                @click="edit(transaction._id)" 
-                                class="btn-edit"
-                              >
-                                Editar
-                              </button>
-                            </router-link>
-                            <button 
-                              @click="deleteRow(transaction._id)" 
-                              class="btn-delete"
-                            >
-                              Eliminar
-                            </button>
-                          </td>
-                      </tr>
-                  </tbody>
-              </table>
-              <div v-if="!loading && sortedTransactions.length === 0">La tabla está vacía.</div>
+        <h1>HISTORIAL DE TRANSACCIONES</h1>
+        <div class="container">
+          <div v-if="loading" class="loader"></div>
+          <table v-if="!loading" class="transaction-table">
+            <thead>
+              <tr>
+                <th>CRIPTOMONEDA</th>
+                <th>CANTIDAD</th>
+                <th>PRECIO</th>
+                <th>OPERACIÓN</th>
+                <th>FECHA DE OPERACIÓN</th>
+                <th>EDITAR</th>
+                <th>BORRAR</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr 
+                v-for="transaction in sortedTransactions" 
+                :key="transaction._id" 
+                :class="{ selected: selectRow === transaction._id }">
+                <td>{{ nameCriptos(transaction.crypto_code) }}</td>
+                <td>{{ transaction.crypto_amount }}</td>
+                <td>$ {{ transaction.money }}</td>
+                <td>{{ typeAction(transaction.action) }}</td>
+                <td>{{ time(transaction.datetime) }}</td>
+                <td>
+                  <router-link :to="{name: 'Modify', query: {id: selectRow}}">
+                    <button @click="edit(transaction._id)" class="btn btn-edit">
+                      Editar
+                    </button>
+                  </router-link>
+                </td>
+                <td>
+                  <button @click="deleteRow(transaction._id)" class="btn btn-delete">
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div v-if="!loading && sortedTransactions.length === 0" class="no-data">
+            La tabla no presenta datos...
           </div>
-      </div>
-  </div>
+        </div>
+      </div>        
+    </div> 
 </template>
 
 <script>
@@ -80,92 +74,152 @@ export default {
       },
   },
   methods: {
-      edit(id){
-          if(this.selectRow !== id){
-              this.selectRow = id;
-              console.log("Seleccionado para edición:", this.selectRow);
-          }else{
-              this.selectRow = null;
-          }
-      },
-      deleteRow(id){
-          this.loading = true;
+    nameCriptos(crypto_code) {
+        const cryptoNames = {
+            btc: "Bitcoin",
+            eth: "Ethereum",
+            usdt: "Theter",
+            usdc: "USD Coin",
+            dai: "Dai",
+        };
+        return cryptoNames[crypto_code] || "Desconocido";
+    },
+    typeAction(action) {
+        if (action === "purchase") {
+            return "Compra";
+         }
+        if (action === "sale") {
+            return "Venta";
+        }
+        return "Desconocido";
+    },
+    edit(id){
+        if(this.selectRow !== id){
+            this.selectRow = id;
+        }else{
+            this.selectRow = null;
+        }
+    },
+    deleteRow(id){
+        this.loading = true;
 
-          if(confirm("¿Está seguro que desea eliminar esta transacción?")) {
-              ClientApi.deleteTransaction(id)
+        if(confirm("¿Está seguro que desea eliminar esta transacción?")) {
+            ClientApi.deleteTransaction(id)
               .then(() => {
-                  console.log("Transacción eliminada con éxito");
                   this.$store.commit('SET_TRANSACTIONS', this.transactions.filter(t => t._id !== id));
               })
               .catch((error) => {
-                  console.error("Error al eliminar la transacción:", error.message || error);
+                alert(error.message);
               }).finally(() => {
                   this.loading = false;
               });
-          }
-      },
-      nameCriptos(crypto_code) {
-          const cryptoNames = {
-              btc: "Bitcoin",
-              eth: "Ethereum",
-              usdt: "Theter",
-              usdc: "USD Coin",
-              dai: "Dai",
-          };
-          return cryptoNames[crypto_code] || "Desconocido";
-      },
-      typeAction(action) {
-          if (action === "purchase") {
-              return "Compra";
-          }
-          if (action === "sale") {
-              return "Venta";
-          }
-          return "Desconocido";
-      },
-      time(datetime) {
-          return datetime.slice(0, 10) + " " + datetime.slice(11, 16) + "Hs";
-      },
+      }
+    },
+    time(datetime) {
+        return datetime.slice(0, 10) + " " + datetime.slice(11, 16) + "Hs";
+    },
   },
 }
 </script>
-
-  
 <style scoped>
-  .btn-edit, .btn-delete {
-    padding: 5px 10px;
-    margin: 0 5px;
-    cursor: pointer;
-    font-size: 14px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-  }
-  
-  .btn-edit {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  .btn-edit:hover {
-    background-color: #45a049;
-  }
-  
-  .btn-delete {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  .btn-delete:hover {
-    background-color: #e53935;
-  }
-  
-  .btn-edit.active {
-    border: 2px solid #388e3c;
-  }
+.history-color {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100vw; 
+  height: 100vh; 
+  background: rgba(44, 42, 42, 0.8); 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  z-index: -1; 
+}
+
+.history {
+  z-index: 1; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  color: white;
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #f4d03f;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.transaction-table thead {
+  background-color: #333;
+  color: #f4d03f;
+  text-transform: uppercase;
+}
+
+.transaction-table th,
+.transaction-table td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #444;
+}
+
+.transaction-table tr:hover {
+  background-color: #292929;
+}
+
+.transaction-table .selected {
+  background-color: #444;
+  color: #f4d03f;
+}
+
+.btn {
+  padding: 8px 15px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+}
+
+.btn-edit {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn-edit:hover {
+  background-color: #45a049;
+}
+
+.btn-delete {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #e53935;
+}
+
+.no-data {
+  color: #f4d03f;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 20px;
+}
 </style>
-  

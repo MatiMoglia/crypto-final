@@ -70,7 +70,7 @@
   }
   
   ul li.user-info {
-    color: #f39c12; 
+    color: #f4d03f; 
     font-weight: bold;
     font-size: 1.1rem;
   }
@@ -85,11 +85,11 @@
   }
   
   ul li a:hover {
-    color: #f39c12; 
+    color: #f4d03f; 
   }
   
   ul li .title {
-    color: #f39c12; 
+    color: #f4d03f; 
   }
   
   ul li a router-link-exact-active {
