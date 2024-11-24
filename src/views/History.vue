@@ -95,7 +95,6 @@ export default {
               ClientApi.deleteTransaction(id)
               .then(() => {
                   console.log("Transacción eliminada con éxito");
-                  // Actualizar la lista tras eliminar
                   this.$store.commit('SET_TRANSACTIONS', this.transactions.filter(t => t._id !== id));
               })
               .catch((error) => {

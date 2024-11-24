@@ -27,17 +27,13 @@
     methods: {
       enter() {
         if (this.idUser.trim() === "") {
-          this.$toast.error("Error! el campo no debe estar vacío");
+          alert("Error: ¡El campo no debe estar vacío!"); // O manejar con console.error
+        } else if (this.idUser.length > 10) {
+          alert("Error: ¡El ID de usuario no debe contener más de 10 caracteres!");
         } else {
-          if (this.idUser.length > 10) {
-            this.$toast.error(
-              "Error! El ID de usuario no debe contener más de 10 caracteres"
-            );
-          } else {
-            this.$store.commit("newUser", this.idUser);
-            this.$store.commit("insertTransaction");
-            this.$router.push("/transactions");
-          }
+          this.$store.commit("newUser", this.idUser);
+          this.$store.commit("insertTransaction");
+          this.$router.push("/transactions");
         }
       }
     }
