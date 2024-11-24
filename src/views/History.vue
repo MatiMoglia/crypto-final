@@ -83,7 +83,7 @@ export default {
       edit(id){
           if(this.selectRow !== id){
               this.selectRow = id;
-              console.log(this.selectRow)
+              console.log("Seleccionado para edición:", this.selectRow);
           }else{
               this.selectRow = null;
           }
@@ -91,37 +91,38 @@ export default {
       deleteRow(id){
           this.loading = true;
 
-          if(confirm("Está seguro que desea eliminar esta transacción?")) {
+          if(confirm("¿Está seguro que desea eliminar esta transacción?")) {
               ClientApi.deleteTransaction(id)
               .then(() => {
-                  this.$toast.info("Eliminado con exito");
+                  console.log("Transacción eliminada con éxito");
+                  // Actualizar la lista tras eliminar
+                  this.$store.commit('SET_TRANSACTIONS', this.transactions.filter(t => t._id !== id));
               })
-              .catch(() => {
-                  this.$toast.error("Error al Eliminar la Transacción");
+              .catch((error) => {
+                  console.error("Error al eliminar la transacción:", error.message || error);
               }).finally(() => {
                   this.loading = false;
               });
           }
       },
       nameCriptos(crypto_code) {
-          if (crypto_code == "btc")
-              return "Bitcoin";
-          if (crypto_code == "eth")
-              return "Ethereum";
-          if (crypto_code == "usdt")
-              return "Theter";
-          if (crypto_code == "usdc")
-              return "USD Coin";
-          if (crypto_code == "dai")
-              return "Dai";
+          const cryptoNames = {
+              btc: "Bitcoin",
+              eth: "Ethereum",
+              usdt: "Theter",
+              usdc: "USD Coin",
+              dai: "Dai",
+          };
+          return cryptoNames[crypto_code] || "Desconocido";
       },
       typeAction(action) {
           if (action === "purchase") {
               return "Compra";
           }
-          else {
+          if (action === "sale") {
               return "Venta";
           }
+          return "Desconocido";
       },
       time(datetime) {
           return datetime.slice(0, 10) + " " + datetime.slice(11, 16) + "Hs";
@@ -129,8 +130,9 @@ export default {
   },
 }
 </script>
+
   
-  <style scoped>
+<style scoped>
   .btn-edit, .btn-delete {
     padding: 5px 10px;
     margin: 0 5px;
@@ -166,5 +168,5 @@ export default {
   .btn-edit.active {
     border: 2px solid #388e3c;
   }
-  </style>
+</style>
   
