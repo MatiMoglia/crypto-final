@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../views/LoginView.vue';
 import Transactions from '../views/Transactions.vue';
 import History from '../views/History.vue';
-//import Modify from  '../views/ModifyView.vue';
+import Modify from  '../views/ModifyView.vue';
 //import CurrentStatus from '../views/CurrentStatus.vue';
 //import Analysis from '../views/InvestmentAnalysis.vue';
 
@@ -22,12 +22,12 @@ const routes = [
     name: 'History',
     component: History,
   },
-  /*
+  
   {
     path: '/modify',
     name: 'Modify',
     component: Modify,
-  },*/
+  },
   /*{
     path: '/status',
     name: 'CurrentStatus',
