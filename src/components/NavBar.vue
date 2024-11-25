@@ -1,33 +1,37 @@
 <template>
-    <div class="navigation">
-      <ul>
-        <li class="user-info">
-          <span class="title">¡Hola! Usuario ID: {{ $store.state.idUser }}</span>
+  <div class="navigation">
+    <ul>
+      <li class="user-info" data-aos="fade-right">
+        <span class="title">
+          <i class="fas fa-user-circle"></i> ¡Hola! ID: {{ $store.state.idUser }}
+        </span>
+      </li>
+      <div class="nav-items">
+        <li>
+          <router-link to="/transactions" class="nav-link" data-aos="fade-down">
+            <i class="fas fa-exchange-alt"></i> Compra-Venta
+          </router-link>
         </li>
         <li>
-          <a href="#">
-            <span class="title"><router-link to="/transactions">Compra-Venta</router-link></span>
-          </a>
+          <router-link to="/history" class="nav-link" data-aos="fade-down">
+            <i class="fas fa-history"></i> Historial
+          </router-link>
         </li>
         <li>
-          <a href="#">
-            <span class="title"><router-link to="/history">Historial</router-link></span>
-          </a>
+          <router-link to="/status" class="nav-link" data-aos="fade-down">
+            <i class="fas fa-info-circle"></i> Estado Actual
+          </router-link>
         </li>
         <li>
-          <a href="#">
-            <span class="title"><router-link to="/status">Estado Actual</router-link></span>
-          </a>
+          <span class="logout nav-link" v-on:click="quit()" data-aos="fade-down">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </span>
         </li>
-        <li>
-          <a href="#">
-            <span class="title logout" v-on:click="quit()">SALIR</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </template>
-  
+      </div>
+    </ul>
+  </div>
+</template>
+
   <script>
   export default {
     data() {
@@ -41,67 +45,73 @@
   };
   </script>
   
-  <style scoped>
+<style scoped>
+  @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+  
   .navigation {
-    width: 100%;
-    background: rgba(0, 0, 0, 0.8); 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px; 
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-  }
+  width: 100%;
+  background: linear-gradient(to right, rgba(5, 5, 5, 0.85), rgba(59, 59, 59, 0.85)); 
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); 
+  backdrop-filter: blur(10px); 
+}
   
-  ul {
-    display: flex;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    width: 95%; 
-    justify-content: space-between; 
-  }
+ul {
+display: flex;
+justify-content: space-between;
+align-items: center;
+list-style: none;
+margin: 0;
+padding: 0;
+width: 97%;
+}
   
-  ul li {
-    display: inline-block; 
-    margin-right: 20px; 
-  }
+.user-info {
+  margin-right: auto; 
+  color: #f4d03f;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
   
-  ul li.user-info {
-    color: #f4d03f; 
-    font-weight: bold;
-    font-size: 1.1rem;
-  }
+.nav-items {
+  display: flex;
+  gap: 30px; 
+}
   
-  ul li a {
-    text-decoration: none;
-    color: white;
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-  }
-  
-  ul li a:hover {
-    color: #f4d03f; 
-  }
-  
-  ul li .title {
-    color: #f4d03f; 
-  }
-  
-  ul li a router-link-exact-active {
-    color: #f39c12; 
-  }
-  ul li .logout {
-  color: red; 
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: color 0.3s ease, transform 0.2s;
 }
 
-ul li .logout:hover {
-  color: darkred; 
+.nav-link:hover {
+  color: #f4d03f;
+  transform: scale(1.05);
+}
+  
+.logout {
+  color: red;
+   cursor: pointer;
+}
+  
+.logout:hover {
+  color: darkred;
+  transform: scale(1.1);
+}
+  
+.nav-link i {
+  font-size: 1.2rem;
 }
 </style>
-
   

@@ -22,7 +22,9 @@
                 v-for="transaction in sortedTransactions" 
                 :key="transaction._id" 
                 :class="{ selected: selectRow === transaction._id }">
-                <td>{{ nameCriptos(transaction.crypto_code) }}</td>
+                <td :style="cryptoTextColor(transaction.crypto_code)">
+                  {{ nameCriptos(transaction.crypto_code) }}
+                </td>
                 <td>{{ transaction.crypto_amount }}</td>
                 <td class="price">$ {{ transaction.money }}</td>
                 <td>
@@ -90,6 +92,16 @@ export default {
             dai: "Dai",
         };
         return cryptoNames[crypto_code] || "Desconocido";
+    },
+    cryptoTextColor(crypto_code) {
+      const cryptoColors = {
+        btc: "color: gold;", 
+        eth: "color: #8c8c8c;", 
+        usdt: "color: #33ff74;", 
+        usdc: "color: #2281e7;", 
+        dai: "color: orange;", 
+      };
+      return cryptoColors[crypto_code] || "color: white;"; 
     },
     typeAction(action) {
         if (action === "purchase") {

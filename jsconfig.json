@@ -1,5 +1,5 @@
 {
-  "compilerOptions": {
+  "cmpilerOptions": {
     "target": "es5",
     "module": "esnext",
     "baseUrl": "./",
@@ -15,5 +15,5 @@
       "dom.iterable",
       "scripthost"
     ]
-  }
+  } 
 }

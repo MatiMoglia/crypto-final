@@ -1,18 +1,17 @@
 <template>
    <Navbar />
    <div class="trade">
-        <div class="header">
-            <img class="logo" src="@/assets/logo.png" alt="Crypto Trade M&M Logo" />
-            <h1>CRYPTO-TRADE M&M</h1>
-        </div>
-        <div class="conteiners">
-                <div class="form">
-                    <FormPurchase />
-                </div>
-                <div class="form">
-                    <FormSale />
-                </div>
-        </div>
+        <br><br><br>
+        <img class="logo" src="@/assets/logo.png" alt="Crypto Trade M&M Logo" />
+        <h1>CRYPTO-TRADE M&M</h1>
+      <div class="conteiners">
+            <div class="form">
+                <FormPurchase />
+            </div>
+            <div class="form">
+                <FormSale />
+            </div>
+      </div>
    </div>
 </template>
 
@@ -43,14 +42,6 @@ body {
   margin-top: 20px;
   width: 100%;
 }
-
-.header {
-  margin-top: 50px;
-  text-align: center;
-  margin-bottom: 20px;
-  padding-top: 20px;
-}
-
 .logo {
   width: 150px; 
   height: 150px;

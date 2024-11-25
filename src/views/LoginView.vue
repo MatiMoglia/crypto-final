@@ -5,11 +5,11 @@
       <div class="logo-container">
         <img src="@/assets/logo.png" alt="Logo" class="logo">
       </div>
-      <div class="text-center mt-4 name">
-        Billetera de Cryptomonedas
+      <div class="text-center name">
+        Billetera de Criptomonedas
       </div>
-      <form class="p-3 mt-3">
-        <div class="form-field d-flex align-items-center">
+      <form>
+        <div class="form-field">
           <i class="fas fa-user-circle"></i>
           <input 
             type="text" 
@@ -19,7 +19,7 @@
             placeholder="Ingrese su ID"
           />
         </div>
-        <button class="btn btn-login mt-4" @click.prevent="enter">LOGIN</button>
+        <button class="btn-login" @click.prevent="enter">LOGIN</button>
       </form>
     </div>
   </div>
