@@ -58,6 +58,9 @@
 import { mapGetters } from "vuex";
 import ClientApi from '@/services/apiClient.js';
 import Navbar from "@/components/NavBar.vue";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+
 export default {
   name: "History",
   components: { Navbar },
@@ -113,19 +116,21 @@ export default {
             this.selectRow = null;
         }
     },
-    deleteRow(id){
-        this.loading = true;
+    deleteRow(id) {
+      this.loading = true;
 
-        if(confirm("¿Está seguro que desea eliminar esta transacción?")) {
-            ClientApi.deleteTransaction(id)
-              .then(() => {
-                  this.$store.commit('SET_TRANSACTIONS', this.transactions.filter(t => t._id !== id));
-              })
-              .catch((error) => {
-                alert(error.message);
-              }).finally(() => {
-                  this.loading = false;
-              });
+      if (confirm("¿Está seguro que desea eliminar esta transacción?")) {
+        ClientApi.deleteTransaction(id)
+          .then(() => {
+            this.$store.commit('SET_TRANSACTIONS', this.transactions.filter(t => t._id !== id));
+            toast.success("Transacción eliminada con éxito");
+          })
+          .catch((error) => {
+            toast.error(`Error: ${error.message}`);
+          })
+          .finally(() => {
+            this.loading = false;
+          });
       }
     },
     time(datetime) {

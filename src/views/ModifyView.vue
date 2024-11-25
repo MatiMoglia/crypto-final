@@ -77,12 +77,13 @@
       </div>
     </div>
   </template>
-  
 
   <script>
   import ClientApi from "@/services/apiClient";
   import CryptoApi from "@/services/apiCripto";
-  
+  import { toast } from "vue3-toastify"; 
+
+import "vue3-toastify/dist/index.css";
   export default {
     name: "Modify",
     data() {
@@ -127,14 +128,21 @@
             .then(() => {
             console.log("Transacción editada correctamente.");
             this.$store.commit("insertTransaction"); 
-            this.$router.push("/history");
+            setTimeout(() => {
+              this.$router.push("/history");
+            }, 3000); 
+            toast.success("Transacción guardada correctamente.");
             })
             .catch((error) => {
             console.error("Error al editar la transacción:", error);
+            toast.error("Error al guardar la transacción.");
             });
      },
       cancel() {
-        this.$router.push("/history");
+        setTimeout(() => {
+          this.$router.push("/history");
+        }, 3000); 
+        toast.error("Edición cancelada.");
       },
       getAgencies(crypto) {
         this.selectAgenciesDisabled = true;
@@ -146,7 +154,7 @@
             this.selectAgenciesDisabled = false;
           })
           .catch(() => {
-            console.error("Error al obtener agencias.");
+            toast.error("Error al obtener agencias.");
           });
       },
       enableAmount() {
