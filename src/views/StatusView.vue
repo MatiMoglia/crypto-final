@@ -1,7 +1,9 @@
 <template>
-  <div class="body">
-    <Navbar />
+  <Navbar />
+  <div class="status">
     <div class="container">
+      <h1>BILLETERA DE USUARIO</h1>
+      <h2>Estado actual de la cuenta</h2>
       <div v-if="loading" class="loader"></div>
       <table v-if="!loading">
         <thead>
@@ -37,7 +39,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import Navbar from "@/components/NavBar.vue";
-  import CryptoApi from "@/services/apiCripto";
+  import apiCripto from "@/services/apiCripto";
   
   export default {
     name: 'CurrentStatus',
@@ -74,7 +76,7 @@
         const cryptoData = {};
 
         for (const coin of this.wallet) {
-          const res = await CryptoApi.getPriceMoney(coin.crypto_code);
+          const res = await apiCripto.getPriceMoney(coin.crypto_code);
           const data = {
             crypto_amount: coin.crypto_amount,
             money: parseFloat(coin.money),
@@ -94,9 +96,94 @@
         console.log(this.currentMoney);
       }catch (error) {
         console.error("Error fetching data:", error);
-        this.$toast.error("Error");
         this.loading = false;
       }
     },
   };
 </script>
+<style scoped>
+.status {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100vw; 
+  height: 100vh; 
+  background: rgba(44, 42, 42, 0.8); 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  z-index: -1; 
+}
+.container {
+  max-width: 800px;
+  border: 2px solid #d4af37; 
+  padding: 20px;
+  border-radius: 10px; 
+  width: 90%;
+  margin: 0 auto;
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+table {
+  width: 100%;
+  margin: 20px auto;
+  border-collapse: collapse; 
+}
+
+thead {
+  background-color: #1c1c1c; 
+  color: #d4af37; 
+}
+
+th, td {
+  border: 1px solid #d4af37; 
+  padding: 10px;
+  text-align: center;
+}
+
+tbody tr:hover {
+  background-color: #2a2a2a; 
+  color: #fff; 
+}
+
+tfoot {
+  background-color: #1c1c1c; 
+}
+
+.total th, .total td {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #fff; 
+}
+
+.loader {
+  border: 5px solid #1c1c1c;
+  border-top: 5px solid #d4af37; 
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin: 50px auto;
+  animation: spin 1s linear infinite;
+}
+h1 {
+  font-size: 2.5rem;
+  color: #f4d03f;
+  font-family: 'Arial', sans-serif;
+  margin-bottom: 10px;
+}
+h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #e2d499;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
