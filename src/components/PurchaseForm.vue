@@ -73,8 +73,9 @@
 
 <script>
 import ClientApi from "@/services/apiClient";
-import CryptoApi from "@/services/apiCripto";
-
+import CriptoApi from "@/services/apiCripto";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 export default {
   name: "FormPurchase",
   data() {
@@ -99,25 +100,26 @@ export default {
       this.loading = true;
 
       if (this.buySale.crypto_amount === "") {
-        console.log("Ingrese la cantidad a comprar");
+        toast.error("Ingrese la cantidad a comprar");
       } else if (!parseFloat(this.buySale.crypto_amount)) {
-        console.log("Debe ingresar un valor numérico");
+        toast.error("Debe ingresar un valor numérico para la cantidad");
       } else if (parseFloat(this.buySale.crypto_amount) <= 0) {
-        console.log("La cantidad a ingresar debe ser mayor a 0");
+        toast.error("La cantidad a ingresar debe ser mayor a 0");
       } else if (this.buySale.money === "") {
-        console.log("Ingrese el valor de la compra");
+        toast.error("Ingrese el valor de la compra");
       } else if (!parseFloat(this.buySale.money)) {
-        console.log("Debe ingresar un valor numérico");
+        toast.error("Debe ingresar un valor numérico para el monto");
       } else if (parseFloat(this.buySale.money) <= 0) {
-        console.log("El monto a ingresar debe ser mayor a 0");
+        toast.error("El monto a ingresar debe ser mayor a 0");
       } else if (this.buySale.crypto_code === "") {
-        console.log("Debe seleccionar una criptomoneda");
+        toast.error("Debe seleccionar una criptomoneda");
       } else {
         this.buySale.datetime = new Date();
         this.buySale.datetime.setHours(this.buySale.datetime.getHours() - 3);
+
         ClientApi.newTransaction(this.buySale)
           .then(() => {
-            console.log("Compra realizada con éxito");
+            toast.success("Compra realizada con éxito"); // Notificación de éxito
             this.$store.commit("insertTransaction");
             this.buySale.crypto_code = "";
             this.buySale.crypto_amount = "";
@@ -125,7 +127,7 @@ export default {
             this.selectedAgency = "";
           })
           .catch(() => {
-            console.log("Error al realizar la compra");
+            toast.error("Error al realizar la compra"); // Notificación de error
           })
           .finally(() => {
             this.loading = false;
@@ -133,7 +135,7 @@ export default {
       }
     },
     getAgencies(crypto) {
-      CryptoApi.getAgenciesInformation(crypto)
+      CriptoApi.getAgenciesInformation(crypto)
         .then((res) => {
           this.agencies = Object.keys(res.data).map((agency, index) => {
             return { agency: agency, values: Object.values(res.data)[index] };

@@ -75,7 +75,8 @@
 import ClientApi from "@/services/apiClient";
 import CryptoApi from "@/services/apiCripto";
 import { mapGetters } from "vuex";
-
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 export default {
     name: "FormSale",
     data() {
@@ -101,82 +102,82 @@ export default {
         }),
     },
     methods: {
-        saleCripto() {
-            this.loading = true;
+      saleCripto() {
+      this.loading = true;
 
-            if (!this.buySale.crypto_amount) {
-                alert("Ingrese la cantidad a vender");
-            } else if (!parseFloat(this.buySale.crypto_amount)) {
-                alert("Debe ingresar un valor numérico");
-            } else if (parseFloat(this.buySale.crypto_amount) <= 0) {
-                alert("La cantidad debe ser mayor a 0");
-            } else if (!this.buySale.money) {
-                alert("El campo de Importe no debe estar vacío");
-            } else if (!parseFloat(this.buySale.money)) {
-                alert("Debe ingresar un valor numérico en importe");
-            } else if (parseFloat(this.buySale.money) <= 0) {
-                alert("El importe debe ser mayor a 0");
-            } else if (!this.buySale.crypto_code) {
-                alert("Seleccione una Criptomoneda...");
-            } else {
-                const cryptoBalance = this.getAmountInWallet(this.buySale.crypto_code);
+      if (!this.buySale.crypto_amount) {
+        toast.error("Ingrese la cantidad a vender");
+      } else if (!parseFloat(this.buySale.crypto_amount)) {
+        toast.error("Debe ingresar un valor numérico");
+      } else if (parseFloat(this.buySale.crypto_amount) <= 0) {
+        toast.error("La cantidad debe ser mayor a 0");
+      } else if (!this.buySale.money) {
+        toast.error("El campo de Importe no debe estar vacío");
+      } else if (!parseFloat(this.buySale.money)) {
+        toast.error("Debe ingresar un valor numérico en importe");
+      } else if (parseFloat(this.buySale.money) <= 0) {
+        toast.error("El importe debe ser mayor a 0");
+      } else if (!this.buySale.crypto_code) {
+        toast.error("Seleccione una Criptomoneda...");
+      } else {
+        const cryptoBalance = this.getAmountInWallet(this.buySale.crypto_code);
 
-                if (parseFloat(this.buySale.crypto_amount) <= cryptoBalance) {
-                    this.buySale.datetime = new Date();
-                    this.buySale.datetime.setHours(this.buySale.datetime.getHours() - 3);
+        if (parseFloat(this.buySale.crypto_amount) <= cryptoBalance) {
+          this.buySale.datetime = new Date();
+          this.buySale.datetime.setHours(this.buySale.datetime.getHours() - 3);
 
-                    ClientApi.newTransaction(this.buySale)
-                        .then(() => {
-                            alert("Venta realizada con éxito");
-                            this.$store.commit("insertTransaction");
-                            this.resetForm();
-                        })
-                        .catch(() => {
-                            alert("Error al realizar la venta");
-                        })
-                        .finally(() => {
-                            this.loading = false;
-                        });
-                } else {
-                    alert("No tienes suficientes criptomonedas para realizar esta venta");
-                }
-            }
+          ClientApi.newTransaction(this.buySale)
+            .then(() => {
+              toast.success("Venta realizada con éxito");
+              this.$store.commit("insertTransaction");
+              this.resetForm();
+            })
+            .catch(() => {
+              toast.error("Error al realizar la venta");
+            })
+            .finally(() => {
+              this.loading = false;
+            });
+        } else {
+          toast.error("No tienes suficientes criptomonedas para realizar esta venta");
+        }
+      }
 
-            this.loading = false; 
-        },
-        getAgencies(crypto) {
-            CryptoApi.getAgenciesInformation(crypto)
-                .then((res) => {
-                    this.agencies = Object.keys(res.data).map((agency, index) => {
-                        return { agency: agency, values: Object.values(res.data)[index] };
-                    });
-                    this.selectAgenciesDisabled = false;
-                })
-                .catch(() => {
-                    alert("Error al obtener las agencias");
-                });
-        },
-        enableAmount() {
-            this.setAmountDisabled = false;
-        },
-        calculateAmount() {
-            this.buySale.money = (
-                this.buySale.crypto_amount * this.selectedAgency.values.totalBid
-            ).toFixed(2);
-        },
-        getAmountInWallet(crypto_code) {
-            const inWallet = this.wallet.find((entry) => entry.crypto_code === crypto_code);
-            return inWallet ? parseFloat(inWallet.crypto_amount) : 0;
-        },
-        resetForm() {
-            this.buySale.crypto_code = "";
-            this.buySale.crypto_amount = "";
-            this.buySale.money = "";
-            this.selectedAgency = "";
-            this.selectAgenciesDisabled = true;
-            this.setAmountDisabled = true;
-        },
+      this.loading = false;
     },
+    getAgencies(crypto) {
+      CryptoApi.getAgenciesInformation(crypto)
+        .then((res) => {
+          this.agencies = Object.keys(res.data).map((agency, index) => {
+            return { agency: agency, values: Object.values(res.data)[index] };
+          });
+          this.selectAgenciesDisabled = false;
+        })
+        .catch(() => {
+          toast.error("Error al obtener las agencias");
+        });
+    },
+    enableAmount() {
+      this.setAmountDisabled = false;
+    },
+    calculateAmount() {
+      this.buySale.money = (
+        this.buySale.crypto_amount * this.selectedAgency.values.totalBid
+      ).toFixed(2);
+    },
+    getAmountInWallet(crypto_code) {
+      const inWallet = this.wallet.find((entry) => entry.crypto_code === crypto_code);
+      return inWallet ? parseFloat(inWallet.crypto_amount) : 0;
+    },
+    resetForm() {
+      this.buySale.crypto_code = "";
+      this.buySale.crypto_amount = "";
+      this.buySale.money = "";
+      this.selectedAgency = "";
+      this.selectAgenciesDisabled = true;
+      this.setAmountDisabled = true;
+    },
+  },
 };
 </script>
 

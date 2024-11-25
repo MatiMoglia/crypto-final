@@ -27,6 +27,7 @@
 
 <script>
 import AOS from "aos";
+import { toast } from "vue3-toastify"; 
 import "aos/dist/aos.css";
 
 export default {
@@ -39,13 +40,16 @@ export default {
   methods: {
     enter() {
       if (this.idUser.trim() === "") {
-        alert("Error: ¡El campo no debe estar vacío!"); 
+        toast.error("Error: ¡El campo no debe estar vacío!");
       } else if (this.idUser.length > 10) {
-        alert("Error: ¡El ID de usuario no debe contener más de 10 caracteres!");
+        toast.error("Error: ¡El ID de usuario no debe contener más de 10 caracteres!");
       } else {
+        toast.success("Inicio de sesión exitoso");
         this.$store.commit("newUser", this.idUser);
         this.$store.commit("insertTransaction");
-        this.$router.push("/transactions");
+        setTimeout(() => {
+          this.$router.push("/transactions");
+        }, 3000); 
       }
     }
   },
@@ -60,8 +64,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Para ocupar toda la altura de la pantalla */
-  background: none; /* El fondo ya se maneja en .cyber-bg */
+  min-height: 100vh; 
+  background: none; 
 }
 
 .cyber-bg {
@@ -75,7 +79,7 @@ export default {
 
 .wrapper {
   max-width: 400px;
-  width: 90%; /* Asegúrate de que sea responsive */
+  width: 90%; 
   padding: 30px;
   background: rgba(0, 0, 0, 0.8);
   border: 2px solid #d4af37;
