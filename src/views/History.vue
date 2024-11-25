@@ -10,7 +10,7 @@
               <tr>
                 <th>CRIPTOMONEDA</th>
                 <th>CANTIDAD</th>
-                <th>PRECIO</th>
+                <th>PRECIO (ARG)</th>
                 <th>OPERACIÓN</th>
                 <th>FECHA DE OPERACIÓN</th>
                 <th>EDITAR</th>
@@ -24,8 +24,12 @@
                 :class="{ selected: selectRow === transaction._id }">
                 <td>{{ nameCriptos(transaction.crypto_code) }}</td>
                 <td>{{ transaction.crypto_amount }}</td>
-                <td>$ {{ transaction.money }}</td>
-                <td>{{ typeAction(transaction.action) }}</td>
+                <td class="price">$ {{ transaction.money }}</td>
+                <td>
+                  <span :class="actionColorClass(transaction.action)">
+                    {{ typeAction(transaction.action) }}
+                  </span>
+                </td>
                 <td>{{ time(transaction.datetime) }}</td>
                 <td>
                   <router-link :to="{name: 'Modify', query: {id: selectRow}}">
@@ -93,6 +97,15 @@ export default {
         }
         return "Desconocido";
     },
+    actionColorClass(action) {
+      if (action === "purchase") {
+        return "text-green";
+      }
+      if (action === "sale") {
+        return "text-red";
+      }
+      return "text-default"; 
+    },
     edit(id){
         if(this.selectRow !== id){
             this.selectRow = id;
@@ -136,7 +149,7 @@ export default {
 }
 
 .history {
-  z-index: 1; 
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -151,7 +164,14 @@ h1 {
   margin-bottom: 20px;
   text-align: center;
 }
-
+.text-green {
+  color: green;
+  font-weight: bold;
+}
+.text-red {
+  color: rgb(223, 69, 69);
+  font-weight: bold;
+}
 .container {
   width: 90%;
   max-width: 1200px;
@@ -166,6 +186,7 @@ h1 {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  
 }
 
 .transaction-table thead {
@@ -189,7 +210,10 @@ h1 {
   background-color: #444;
   color: #f4d03f;
 }
-
+.transaction-table td.price {
+  text-overflow: ellipsis; 
+  overflow: hidden; 
+}
 .btn {
   padding: 8px 15px;
   font-size: 0.9rem;
@@ -208,12 +232,12 @@ h1 {
 }
 
 .btn-delete {
-  background-color: #f44336;
+  background-color: #fc291a;
   color: white;
 }
 
 .btn-delete:hover {
-  background-color: #e53935;
+  background-color: #e9130f;
 }
 
 .no-data {
@@ -221,5 +245,23 @@ h1 {
   font-size: 1.2rem;
   text-align: center;
   margin-top: 20px;
+}
+.loader {
+  border: 8px solid #f3f3f3; /* Color de fondo */
+  border-top: 8px solid gold; /* Color dorado */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto; /* Centrado */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

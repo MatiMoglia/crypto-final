@@ -9,9 +9,6 @@ export default {
   getCompraVentaCriptomoneda(exchange, coin) {
     return apiClient.get(`/${exchange}/${coin}/ars/0.01`);
   },
-  getCriptomoneda() {
-    return apiClient.get("/cryptomkt/btc/ars/0.21");
-  },
   getPrecioMoneda(coin) {
     return apiClient.get(`/letsbit/${coin}`);
   },
