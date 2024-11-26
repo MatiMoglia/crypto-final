@@ -12,7 +12,6 @@
                 <th>CANTIDAD</th>
                 <th>PRECIO (ARG)</th>
                 <th>OPERACIÓN</th>
-                <th></th>
                 <th>FECHA DE OPERACIÓN</th>
                 <th>EDITAR</th>
                 <th>BORRAR</th>

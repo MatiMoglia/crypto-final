@@ -1,16 +1,18 @@
 <template>
-    <Navbar />
-    <div class="container">
-      <div class="row">
-        <h1>PRECIOS DEL MERCADO</h1>
-        <input
-          type="text"
-          class="search-input"
-          placeholder="Buscar moneda o símbolo..."
-          v-model="textSearch"
-          @keyup="searchCoin"
-          autofocus
-        />
+  <Navbar />
+  <div class="container">
+    <div class="row">
+      <h1>PRECIOS DEL MERCADO</h1>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Buscar moneda o símbolo..."
+        v-model="textSearch"
+        @keyup="searchCoin"
+        autofocus
+      />
+      <div v-if="loading" class="loader"></div>
+      <div v-else>
         <table class="table-cripto">
           <thead>
             <tr>
@@ -33,9 +35,7 @@
               </td>
               <td>{{ coin.current_price.toLocaleString("en-US", { style: "currency", currency: "ARS" }) }}</td>
               <td
-                :class="[
-                  coin.price_change_percentage_24h > 0 ? 'text-success' : 'text-danger',
-                ]"
+                :class="[coin.price_change_percentage_24h > 0 ? 'text-success' : 'text-danger']"
               >
                 {{ coin.price_change_percentage_24h.toFixed(2) }}%
               </td>
@@ -48,8 +48,9 @@
         </button>
       </div>
     </div>
+  </div>
 </template>
-  
+
 <script>
 import apiMarket from "../services/apiMarket"; 
 import Navbar from "@/components/NavBar.vue";
@@ -65,24 +66,30 @@ export default {
       filteredCoins: [], 
       displayedCoins: 50, 
       textSearch: "", 
+      loading: true,
     };
   },
   computed: {
     limitedCoins() {
       return this.filteredCoins.slice(0, this.displayedCoins);
     },
-
     showLoadMore() {
       return this.filteredCoins.length > this.displayedCoins;
     },
   },
   async mounted() {
     try {
+      this.loading = true; 
       const response = await apiMarket.getMarketData("ars", 100, 1);
       this.coins = response.data;
       this.filteredCoins = response.data;
+    setTimeout(() => {
+        this.loading = false;
+    }, 2000); 
     } catch (error) {
       toast.error("Error al cargar los datos del mercado");
+    } finally {
+      this.loading = false; 
     }
   },
   methods: {
@@ -218,5 +225,23 @@ h1 {
 }
 .text-danger {
   color: rgb(185, 79, 79) !important;
+}
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #ffd700; 
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1.5s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
