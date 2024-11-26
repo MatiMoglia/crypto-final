@@ -23,6 +23,11 @@
           </router-link>
         </li>
         <li>
+          <router-link to="/market" class="nav-link" data-aos="fade-down">
+            <i class="fas fa-chart-line"></i> Mercado
+          </router-link>
+        </li>
+        <li>
           <span class="logout nav-link" v-on:click="quit()" data-aos="fade-down">
             <i class="fas fa-sign-out-alt"></i> Logout
           </span>
@@ -106,7 +111,7 @@ width: 97%;
 }
   
 .logout:hover {
-  color: darkred;
+  color: rgb(236, 65, 65);
   transform: scale(1.1);
 }
   

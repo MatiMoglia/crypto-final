@@ -4,6 +4,7 @@ import Transactions from '../views/TransactionsView.vue';
 import History from '../views/History.vue';
 import Modify from  '../views/ModifyView.vue';
 import Status from '../views/StatusView.vue';
+import Market from '../views/MarketView.vue';
 //import Analysis from '../views/InvestmentAnalysis.vue';
 
 const routes = [
@@ -22,7 +23,6 @@ const routes = [
     name: 'History',
     component: History,
   },
-  
   {
     path: '/modify',
     name: 'Modify',
@@ -32,7 +32,13 @@ const routes = [
     path: '/status',
     name: 'Status',
     component: Status,
-  },/*
+  },
+  {
+    path: '/market',
+    name: 'Market',
+    component: Market,
+  },
+  /*
   {
     path: '/analysis',
     name: 'Analysis',
