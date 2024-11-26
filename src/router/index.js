@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../views/LoginView.vue';
 import Transactions from '../views/TransactionsView.vue';
-import History from '../views/History.vue';
+import History from '../views/HistoryView.vue';
 import Modify from  '../views/ModifyView.vue';
 import Status from '../views/StatusView.vue';
 import Market from '../views/MarketView.vue';
