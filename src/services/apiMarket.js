@@ -5,7 +5,7 @@ const apiClient = axios.create({
 });
 
 export default {
-  getMarketData(currency = "usd", perPage = 100, page = 1) {
+  getMarketData(currency = "ars", perPage = 100, page = 1) {
     return apiClient.get(`/coins/markets`, {
       params: {
         vs_currency: currency,
@@ -22,7 +22,7 @@ export default {
   getCoinHistory(coinId, days = 7) {
     return apiClient.get(`/coins/${coinId}/market_chart`, {
       params: {
-        vs_currency: "usd",
+        vs_currency: "ars",
         days: days,
       },
     });

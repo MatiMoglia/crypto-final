@@ -31,7 +31,7 @@
                   <span class="text-muted text-uppercase">({{ coin.symbol }})</span>
                 </div>
               </td>
-              <td>{{ coin.current_price.toLocaleString("en-US", { style: "currency", currency: "USD" }) }}</td>
+              <td>{{ coin.current_price.toLocaleString("en-US", { style: "currency", currency: "ARS" }) }}</td>
               <td
                 :class="[
                   coin.price_change_percentage_24h > 0 ? 'text-success' : 'text-danger',
@@ -78,7 +78,7 @@ export default {
   },
   async mounted() {
     try {
-      const response = await apiMarket.getMarketData("usd", 100, 1);
+      const response = await apiMarket.getMarketData("ars", 100, 1);
       this.coins = response.data;
       this.filteredCoins = response.data;
     } catch (error) {

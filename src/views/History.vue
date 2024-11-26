@@ -100,7 +100,7 @@ export default {
         eth: "color: #8c8c8c;", 
         usdt: "color: #33ff74;", 
         usdc: "color: #2281e7;", 
-        dai: "color: orange;", 
+        dai: "color: #f517f8;", 
       };
       return cryptoColors[crypto_code] || "color: white;"; 
     },
