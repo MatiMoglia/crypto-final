@@ -70,9 +70,10 @@
               <option value="sale">VENDER</option>
             </select>
           </div>
-  
-          <button class="btn" @click.prevent="edit">GUARDAR</button>
-          <button class="btn" @click.prevent="cancel">CANCELAR</button>
+          <div class="buttons">
+            <button class="btn" @click.prevent="edit">GUARDAR</button>
+            <button class="btn" @click.prevent="cancel">CANCELAR</button>
+          </div>
         </form>
       </div>
     </div>
@@ -227,7 +228,12 @@ select option {
   background-color: #1c1c1c; 
   color: #d4af37; 
 }
-  
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
 button.btn {
   padding: 10px 20px;
   font-size: 1rem;
