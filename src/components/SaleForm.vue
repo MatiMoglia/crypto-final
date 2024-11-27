@@ -72,12 +72,12 @@
 </template>  
 
 <script>
-import ClientApi from "@/services/apiClient";
-import CryptoApi from "@/services/apiCripto";
-import { mapGetters } from "vuex";
-import { toast } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
-export default {
+  import ClientApi from "@/services/apiClient";
+  import CryptoApi from "@/services/apiCripto";
+  import { mapGetters } from "vuex";
+  import { toast } from "vue3-toastify";
+  import "vue3-toastify/dist/index.css";
+  export default {
     name: "FormSale",
     data() {
         return {

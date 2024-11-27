@@ -217,6 +217,7 @@ table {
   width: 100%;
   margin: 20px auto;
   border-collapse: collapse;
+  color: rgb(250, 239, 180);
 }
 
 thead {
