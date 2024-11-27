@@ -2,74 +2,92 @@
     <Navbar />
     <div class="history-color">
       <div class="history">
-        <h1>HISTORIAL DE TRANSACCIONES</h1>
+        <h1 class="sticky-title">HISTORIAL DE TRANSACCIONES</h1> 
         <div class="container">
           <div v-if="loading" class="loader"></div>
-          <table v-if="!loading" class="transaction-table">
-            <thead>
-              <tr>
-                <th>CRIPTOMONEDA</th>
-                <th>CANTIDAD</th>
-                <th>PRECIO (ARG)</th>
-                <th>OPERACIÓN</th>
-                <th>FECHA DE OPERACIÓN</th>
-                <th>EDITAR</th>
-                <th>BORRAR</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr 
-                v-for="transaction in sortedTransactions" 
-                :key="transaction._id" 
-                :class="{ selected: selectRow === transaction._id }">
-                <td :style="cryptoTextColor(transaction.crypto_code)">
-                  {{ nameCriptos(transaction.crypto_code) }}
-                </td>
-                <td>{{ transaction.crypto_amount }}</td>
-                <td class="price">$ {{ transaction.money }}</td>
-                <td>
-                  <span :class="actionColorClass(transaction.action)">
-                    {{ typeAction(transaction.action) }}
-                  </span>
-                </td>
-                <td>{{ time(transaction.datetime) }}</td>
-                <td>
-                  <router-link :to="{name: 'Modify', query: {id: selectRow}}">
-                    <button @click="edit(transaction._id)" class="btn btn-edit">
-                      Editar
+          <div class="table-container"> 
+            <table v-if="!loading" class="transaction-table">
+              <thead>
+                <tr>
+                  <th>CRIPTOMONEDA</th>
+                  <th>CANTIDAD</th>
+                  <th>PRECIO (ARG)</th>
+                  <th>OPERACIÓN</th>
+                  <th>FECHA DE OPERACIÓN</th>
+                  <th>DETALLES</th>
+                  <th>EDITAR</th>
+                  <th>BORRAR</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="transaction in sortedTransactions"
+                  :key="transaction._id"
+                  :class="{ selected: selectRow === transaction._id }"
+                >
+                  <td :style="cryptoTextColor(transaction.crypto_code)">
+                    {{ nameCriptos(transaction.crypto_code) }}
+                  </td>
+                  <td>{{ transaction.crypto_amount }}</td>
+                  <td class="price">$ {{ transaction.money }}</td>
+                  <td>
+                    <span :class="actionColorClass(transaction.action)">
+                      {{ typeAction(transaction.action) }}
+                    </span>
+                  </td>
+                  <td>{{ time(transaction.datetime) }}</td>
+                  <td>
+                    <button @click="showTransactionDetails(transaction)" class="btn btn-details">
+                      Detalles
                     </button>
-                  </router-link>
-                </td>
-                <td>
-                  <button @click="deleteRow(transaction._id)" class="btn btn-delete">
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div v-if="!loading && sortedTransactions.length === 0" class="no-data">
-            La tabla no presenta datos...
+                  </td>
+                  <td>
+                    <router-link :to="{name: 'Modify', query: {id: selectRow}}">
+                      <button @click="edit(transaction._id)" class="btn btn-edit">
+                        Editar
+                      </button>
+                    </router-link>
+                  </td>
+                  <td>
+                    <button @click="deleteRow(transaction._id)" class="btn btn-delete">
+                      Borrar
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </div>
-      </div>        
+      <div v-if="!loading && sortedTransactions.length === 0" class="no-data">
+          La tabla no presenta datos...
+      </div>
+  </div>
+</div>
     </div> 
+    <TransactionDetails
+    v-if="modalVisible"
+    :transaction="selectedTransaction"
+    :isVisible="modalVisible"
+    @close="modalVisible = false"
+  />
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import ClientApi from '@/services/apiClient.js';
 import Navbar from "@/components/NavBar.vue";
+import TransactionDetails from "@/components/TransactionDetails.vue";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
 export default {
   name: "History",
-  components: { Navbar },
+  components: { Navbar, TransactionDetails  },
   data() {
       return {
           selectRow: null,
           loading: false,
+          modalVisible: false,
+          selectedTransaction: null,
       };
   },
   computed:{
@@ -83,6 +101,10 @@ export default {
       },
   },
   methods: {
+    showTransactionDetails(transaction) {
+      this.selectedTransaction = transaction;
+      this.modalVisible = true;  
+    },
     nameCriptos(crypto_code) {
         const cryptoNames = {
             btc: "Bitcoin",
@@ -148,9 +170,13 @@ export default {
     time(datetime) {
         return datetime.slice(0, 10) + " " + datetime.slice(11, 16) + "Hs";
     },
+    toggleDetails(id) {
+    this.showDetails[id] = !this.showDetails[id];  // Alternar el valor de la propiedad directamente
+    } 
   },
 }
 </script>
+
 <style scoped>
 .history-color {
   position: fixed; 
@@ -163,6 +189,7 @@ export default {
   justify-content: center; 
   align-items: center; 
   z-index: -1; 
+  overflow-y: auto;
 }
 
 .history {
@@ -174,6 +201,19 @@ export default {
   color: white;
   margin-top: 0;
 }
+.sticky-title {
+  position: sticky;
+  top: 0;
+  color: #f4d03f;
+  font-size: 2.5rem;
+  padding: 10px;
+  text-align: center;
+  z-index: 10;
+}
+.table-container {
+  max-height: 60vh; 
+  overflow-y: auto; 
+}
 
 h1 {
   font-size: 2.5rem;
@@ -181,6 +221,7 @@ h1 {
   margin-bottom: 20px;
   text-align: center;
 }
+
 .text-green {
   color: green;
   font-weight: bold;
@@ -189,6 +230,7 @@ h1 {
   color: rgb(223, 69, 69);
   font-weight: bold;
 }
+
 .container {
   width: 90%;
   max-width: 1200px;
@@ -203,7 +245,6 @@ h1 {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  
 }
 
 .transaction-table thead {
@@ -227,16 +268,24 @@ h1 {
   background-color: #444;
   color: #f4d03f;
 }
+
 .transaction-table td.price {
   text-overflow: ellipsis; 
   overflow: hidden; 
 }
+
+/* Botones */
 .btn {
   padding: 8px 15px;
   font-size: 0.9rem;
   cursor: pointer;
   border-radius: 5px;
   border: none;
+}
+
+.btn-details {
+  background-color: #a39a44;
+  color: white;
 }
 
 .btn-edit {
@@ -263,14 +312,15 @@ h1 {
   text-align: center;
   margin-top: 20px;
 }
+
 .loader {
-  border: 8px solid #f3f3f3; /* Color de fondo */
-  border-top: 8px solid gold; /* Color dorado */
+  border: 8px solid #f3f3f3; 
+  border-top: 8px solid gold; 
   border-radius: 50%;
   width: 50px;
   height: 50px;
   animation: spin 1s linear infinite;
-  margin: 20px auto; /* Centrado */
+  margin: 20px auto; 
 }
 
 @keyframes spin {
