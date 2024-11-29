@@ -5,7 +5,6 @@ import History from '../views/HistoryView.vue';
 import Modify from  '../views/ModifyView.vue';
 import Status from '../views/StatusView.vue';
 import Market from '../views/MarketView.vue';
-//import Analysis from '../views/InvestmentAnalysis.vue';
 
 const routes = [
   {
@@ -38,12 +37,6 @@ const routes = [
     name: 'Market',
     component: Market,
   },
-  /*
-  {
-    path: '/analysis',
-    name: 'Analysis',
-    component: Analysis,
-  },*/
 ];
 
 const router = createRouter({

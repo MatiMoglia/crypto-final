@@ -107,7 +107,7 @@ h2 {
 }
 .cripto-grid {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center; 
   gap: 16px; 
   padding: 16px;

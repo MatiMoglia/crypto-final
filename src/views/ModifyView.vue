@@ -1,175 +1,193 @@
 <template>
-    <div class="modify">
-      <div class="new">
-        <div v-if="loading" class="loader"></div>
-        <form v-if="!loading" @submit.prevent>
-          <div class="title">
-          <h1>EDITAR</h1>
-          <h3>Transaccion ID: <span class="transaction-id">{{ id }}</span></h3>
-          </div>
-          <div class="criptos">
-            <div class="select">
-              <select
-                id="crypto-select"
-                v-model="transactionModify.crypto_code"
-                @change="getAgencies(transactionModify.crypto_code)"
-              >
-                <option value="" disabled selected hidden>CRIPTOMONEDA</option>
-                <option value="btc">BITCOIN</option>
-                <option value="eth">ETHEREUM</option>
-                <option value="usdt">THETER</option>
-                <option value="usdc">USD COIN</option>
-                <option value="dai">DAI</option>
-              </select>
-            </div>
-          </div>
-  
+  <div class="modify">
+    <div class="new">
+      <div v-if="loading" class="loader"></div>
+      <form v-irptloading" @submit.prevent>
+        <div class="title">
+        <h1>EDITAR</h1>
+        <h3>Transaccion ID: <span class="transaction-id">{{ id }}</span></h3>
+        </div>
+        <div class="criptos">
           <div class="select">
             <select
-              id="agency-select"
-              v-model="selectedAgency"
-              @change="enableAmount"
-              :disabled="selectAgenciesDisabled"
+              id="crypto-select"
+              v-model="transactionModify.crypto_code"
+              @change="getAgencies(transactionModify.crypto_code)"
             >
-              <option value="" disabled selected hidden>SELECCIONAR AGENCIA</option>
-              <option
-                v-for="agency in agencies"
-                :key="agency.agency"
-                :value="agency"
-              >
-                {{ agency.agency.toUpperCase() + " - PRECIO: " + agency.values.totalAsk }}
-              </option>
+              <option value="" disabled selected hidden>CRIPTOMONEDA</option>
+              <option value="btc">BITCOIN</option>
+              <option value="eth">ETHEREUM</option>
+              <option value="usdt">THETER</option>
+              <option value="usdc">USD COIN</option>
+              <option value="dai">DAI</option>
             </select>
           </div>
-  
-          <div class="cantCompra">
-            <input
-              type="number"
-              id="crypto-amount"
-              v-model="transactionModify.crypto_amount"
-              placeholder="CANTIDAD A COMPRAR"
-              :disabled="setAmountDisabled"
-              @input="calculateAmount"
-            />
-          </div>
-  
-          <div class="pagoModi">
-            <input
-              type="number"
-              id="money"
-              v-model="transactionModify.money"
-              placeholder="IMPORTE $"
-              disabled
-            />
-          </div>
-  
-          <div class="select">
-            <select id="action-select" v-model="transactionModify.action">
-              <option value="" disabled selected hidden>TRANSACCIÓN</option>
-              <option value="purchase">COMPRAR</option>
-              <option value="sale">VENDER</option>
-            </select>
-          </div>
-          <div class="buttons">
-            <button class="btn" @click.prevent="edit">GUARDAR</button>
-            <button class="btn" @click.prevent="cancel">CANCELAR</button>
-          </div>
-        </form>
-      </div>
+        </div>
+
+        <div class="select">
+          <select
+            id="agency-select"
+            v-model="selectedAgency"
+            @change="enableAmount"
+            :disabled="selectAgenciesDisabled"
+          >
+            <option value="" disabled selected hidden>SELECCIONAR AGENCIA</option>
+            <option
+              v-for="agency in agencies"
+              :key="agency.agency"
+              :value="agency"
+            >
+              {{ agency.agency.toUpperCase() + " - PRECIO: " + agency.values.totalAsk }}
+            </option>
+          </select>
+        </div>
+
+        <div class="amount-modify">
+          <input
+            type="number"
+            id="crypto-amount"
+            v-model="transactionModify.crypto_amount"
+            placeholder="CANTIDAD A COMPRAR"
+            :disabled="setAmountDisabled"
+            @input="calculateAmount"
+          />
+        </div>
+
+        <div class="money-modify">
+          <input
+            type="number"
+            id="money"
+            v-model="transactionModify.money"
+            placeholder="IMPORTE $"
+            disabled
+          />
+        </div>
+
+        <div class="select">
+          <select id="action-select" v-model="transactionModify.action">
+            <option value="" disabled selected hidden>TRANSACCIÓN</option>
+            <option value="purchase">COMPRAR</option>
+            <option value="sale">VENDER</option>
+          </select>
+        </div>
+        <div class="buttons">
+          <button class="btn" @click.prevent="edit">GUARDAR</button>
+          <button class="btn" @click.prevent="cancel">CANCELAR</button>
+        </div>
+      </form>
     </div>
+  </div>
 </template>
 
 <script>
-  import ClientApi from "@/services/apiClient";
-  import CryptoApi from "@/services/apiCripto";
-  import { toast } from "vue3-toastify"; 
-  import "vue3-toastify/dist/index.css";
+import { mapGetters } from "vuex";
+import ClientApi from "@/services/apiClient";
+import CriptoApi from "@/services/apiCripto";
+import { toast } from "vue3-toastify"; 
+import "vue3-toastify/dist/index.css";
 
-  export default {
-    name: "Modify",
-    data() {
-      return {
-        transactionModify: {
-          user_id: this.$store.state.idUser,
-          action: "",
-          crypto_code: "",
-          crypto_amount: "",
-          money: "",
-          datetime: "",
-        },
-        selectedAgency: "",
-        agencies: [],
-        selectAgenciesDisabled: true,
-        setAmountDisabled: true,
-        loading: false,
-      };
-    },
-    computed: {
-      id() {
-         return this.$route.query.id;
+export default {
+  name: "Modify",
+  data() {
+    return {
+      transactionModify: {
+        user_id: this.$store.state.idUser,
+        action: "",
+        crypto_code: "",
+        crypto_amount: "",
+        money: "",
+        datetime: "",
       },
+      selectedAgency: "",
+      agencies: [],
+      selectAgenciesDisabled: true,
+      setAmountDisabled: true,
+      loading: false,
+    };
+  },
+  computed: {
+    id() {
+       return this.$route.query.id;
     },
-    mounted() {
-    this.loading = true;
-    ClientApi.getTransactionsById(this.id)
-        .then((response) => {
-        this.transactionModify = response.data;
+    ...mapGetters({
+            wallet: "getCurrentStatus",
+        }),
+  },
+  mounted() {
+  this.loading = true;
+  this.$store.commit('insertTransaction');
+  ClientApi.getTransactionsById(this.id)
+      .then((response) => {
+      this.transactionModify = response.data;
+      })
+      .catch((error) => {
+      toast.error("Error al obtener la transacción:", error);
+      })
+      .finally(() => {
+      this.loading = false;
+      });
+  },
+  methods: {
+    edit() {
+      this.transactionModify.datetime = new Date();
+      if (this.transactionModify.action === "sale") {
+        const cryptoBalance = this.getAmountInWallet(this.transactionModify.crypto_code);
+        if (!cryptoBalance) {
+          toast.error("No tienes suficientes criptomonedas para realizar esta transacción");
+          return;
+        }
+        if (parseFloat(this.transactionModify.crypto_amount) > cryptoBalance) {
+          toast.error("No tienes suficientes criptomonedas para realizar esta transacción");
+          return;
+        }
+      }
+      ClientApi.editTransaction(this.transactionModify._id, this.transactionModify)
+        .then(() => {
+          this.$store.commit("insertTransaction"); 
+                setTimeout(() => {
+                  this.$router.push("/history");
+                }, 2000);
+                toast.success("Transacción editada correctamente."); 
         })
-        .catch((error) => {
-        console.error("Error al obtener la transacción:", error);
-        })
-        .finally(() => {
-        this.loading = false;
+        .catch(() => {
+          toast.error("Error al editar la transacción");
         });
     },
-    methods: {
-      edit() {
-        this.transactionModify.datetime = new Date();
-        ClientApi.editTransaction(this.id, this.transactionModify)
-            .then(() => {
-            console.log("Transacción editada correctamente.");
-            this.$store.commit("insertTransaction"); 
-            setTimeout(() => {
-              this.$router.push("/history");
-            }, 3000); 
-            toast.success("Transacción guardada correctamente.");
-            })
-            .catch((error) => {
-            console.error("Error al editar la transacción:", error);
-            toast.error("Error al guardar la transacción.");
-            });
-     },
-      cancel() {
-        setTimeout(() => {
-          this.$router.push("/history");
-        }, 3000); 
-        toast.error("Edición cancelada.");
-      },
-      getAgencies(crypto) {
-        this.selectAgenciesDisabled = true;
-        CryptoApi.getAgenciesInformation(crypto)
-          .then((res) => {
-            this.agencies = Object.keys(res.data).map((agency, index) => {
-              return { agency: agency, values: Object.values(res.data)[index] };
-            });
-            this.selectAgenciesDisabled = false;
-          })
-          .catch(() => {
-            toast.error("Error al obtener agencias.");
-          });
-      },
-      enableAmount() {
-        this.setAmountDisabled = false;
-      },
-      calculateAmount() {
-        if (this.selectedAgency) {
-          this.transactionModify.money = (
-            this.transactionModify.crypto_amount * this.selectedAgency.values.totalAsk
-          ).toFixed(2);
-        }
-      },
+    cancel() {
+      setTimeout(() => {
+        this.$router.push("/history");
+      }, 3000); 
+      toast.info("Edición cancelada.");
     },
-  };
+    getAmountInWallet(crypto_code) {
+      const inWallet = this.wallet.find((entry) => entry.crypto_code === crypto_code);
+      return inWallet ? parseFloat(inWallet.crypto_amount) : 0;
+    },
+    getAgencies(crypto) {
+      this.selectAgenciesDisabled = true;
+      CriptoApi.getAgenciesInformation(crypto)
+        .then((res) => {
+          this.agencies = Object.keys(res.data).map((agency, index) => {
+            return { agency: agency, values: Object.values(res.data)[index] };
+          });
+          this.selectAgenciesDisabled = false;
+        })
+        .catch(() => {
+          toast.error("Error al obtener agencias.");
+        });
+    },
+    enableAmount() {
+      this.setAmountDisabled = false;
+    },
+    calculateAmount() {
+      if (this.selectedAgency) {
+        this.transactionModify.money = (
+          this.transactionModify.crypto_amount * this.selectedAgency.values.totalAsk
+        ).toFixed(2);
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>

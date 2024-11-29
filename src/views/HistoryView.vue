@@ -83,22 +83,22 @@ export default {
   name: "History",
   components: { Navbar, TransactionDetails  },
   data() {
-      return {
-          selectRow: null,
-          loading: false,
-          modalVisible: false,
-          selectedTransaction: null,
-      };
+    return {
+        selectRow: null,
+        loading: false,
+        modalVisible: false,
+        selectedTransaction: null,
+    };
   },
   computed:{
-      ...mapGetters({
-          transactions: "getTransactions",
-      }),
-      sortedTransactions() {
-          return [...this.transactions].sort((a, b) => {
-              return new Date(b.datetime) - new Date(a.datetime);
-          });
-      },
+    ...mapGetters({
+        transactions: "getTransactions",
+    }),
+    sortedTransactions() {
+        return [...this.transactions].sort((a, b) => {
+            return new Date(b.datetime) - new Date(a.datetime);
+        });
+    },
   },
   methods: {
     showTransactionDetails(transaction) {
@@ -144,34 +144,45 @@ export default {
       return "text-default"; 
     },
     edit(id){
-        if(this.selectRow !== id){
-            this.selectRow = id;
-        }else{
-            this.selectRow = null;
-        }
+      if(this.selectRow !== id){
+          this.selectRow = id;
+      }else{
+          this.selectRow = null;
+      }
     },
     deleteRow(id) {
       this.loading = true;
-
-      if (confirm("¿Está seguro que desea eliminar esta transacción?")) {
-        ClientApi.deleteTransaction(id)
-          .then(() => {
-            this.$store.commit('SET_TRANSACTIONS', this.transactions.filter(t => t._id !== id));
-            toast.success("Transacción eliminada con éxito");
-          })
-          .catch((error) => {
-            toast.error(`Error: ${error.message}`);
-          })
-          .finally(() => {
-            this.loading = false;
-          });
-      }
+      this.$swal({
+        title: '¿Está seguro que desea eliminar esta transacción?',
+        text: 'Esta acción no se puede deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          ClientApi.deleteTransaction(id)
+            .then(() => {
+              this.$store.commit('deleteTransaction', id); 
+              this.$swal('Eliminada', 'La transacción ha sido eliminada', 'success');
+            })
+            .catch((error) => {
+              this.$swal('Error', `Error: ${error.message}`, 'error');
+            })
+            .finally(() => {
+              this.loading = false;
+            });
+        } else {
+          this.loading = false;
+          this.$swal('Cancelada', 'La acción ha sido cancelada', 'info');
+        }
+      });
     },
     time(datetime) {
-        return datetime.slice(0, 10) + " " + datetime.slice(11, 16) + "Hs";
+      return datetime.slice(0, 10) + " " + datetime.slice(11, 16) + "Hs";
     },
     toggleDetails(id) {
-    this.showDetails[id] = !this.showDetails[id];  // Alternar el valor de la propiedad directamente
+      this.showDetails[id] = !this.showDetails[id]; 
     } 
   },
 }
