@@ -36,6 +36,10 @@
               </select>
             </div>
           </div>
+          <div class="cant-wallet">
+            Criptos disponibles en la cuenta: 
+            <span class="money" v-if="selectedCryptoBalance !== null">{{ selectedCryptoBalance }}</span>
+          </div>
           <div class="input-group">
             <input
                 type="number"
@@ -43,7 +47,7 @@
                 id="cantSale"
                 name="cantSale"
                 v-model="buySale.crypto_amount"
-                placeholder="Cantidad a Vender"
+                placeholder="Ingrese Cantidad"
                 required
                 :disabled="setAmountDisabled"
                 @input="calculateAmount()"
@@ -56,7 +60,7 @@
                 id="amount"
                 name="amount"
                 v-model="buySale.money"
-                placeholder="Importe $"
+                placeholder="Ingrese Importe $"
                 required
                 disabled
                 class="small-input"
@@ -73,7 +77,7 @@
 
 <script>
   import ClientApi from "@/services/apiClient";
-  import CryptoApi from "@/services/apiCripto";
+  import CriptoApi from "@/services/apiCripto";
   import { mapGetters } from "vuex";
   import { toast } from "vue3-toastify";
   import "vue3-toastify/dist/index.css";
@@ -91,6 +95,7 @@
                 datetime: "",
             },
             selectedAgency: "",
+            selectedCryptoBalance: null,
             agencies: [],
             selectAgenciesDisabled: true,
             setAmountDisabled: true,
@@ -146,7 +151,8 @@
       this.loading = false;
     },
     getAgencies(crypto) {
-      CryptoApi.getAgenciesInformation(crypto)
+      this.selectedCryptoBalance = this.getAmountInWallet(crypto);
+      CriptoApi.getAgenciesInformation(crypto)
         .then((res) => {
           this.agencies = Object.keys(res.data).map((agency, index) => {
             return { agency: agency, values: Object.values(res.data)[index] };
@@ -210,7 +216,13 @@ h2 {
 .input-group {
   margin-bottom: 20px;
 }
-
+.cant-wallet {
+  color: #d4af37;
+  margin: 5px 0;
+}
+.money {
+  color: white;
+}
 .select {
   width: 100%;
 }

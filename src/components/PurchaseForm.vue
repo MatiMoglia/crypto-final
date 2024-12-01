@@ -43,7 +43,7 @@
             id="cantBuy"
             name="cantBuy"
             v-model="buySale.crypto_amount"
-            placeholder="Cantidad a Comprar"
+            placeholder="Ingrese Cantidad"
             required
             :disabled="setAmountDisabled"
             @input="calculateAmount()"
@@ -56,7 +56,7 @@
             id="amount"
             name="amount"
             v-model="buySale.money"
-            placeholder="Importe $"
+            placeholder="Ingrese importe $"
             required
             disabled
             class="small-input"
@@ -119,7 +119,7 @@
 
         ClientApi.newTransaction(this.buySale)
           .then(() => {
-            toast.success("Compra realizada con éxito"); // Notificación de éxito
+            toast.success("Compra realizada con éxito"); 
             this.$store.commit("insertTransaction");
             this.buySale.crypto_code = "";
             this.buySale.crypto_amount = "";
@@ -127,7 +127,7 @@
             this.selectedAgency = "";
           })
           .catch(() => {
-            toast.error("Error al realizar la compra"); // Notificación de error
+            toast.error("Error al realizar la compra"); 
           })
           .finally(() => {
             this.loading = false;

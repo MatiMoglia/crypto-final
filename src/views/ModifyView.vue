@@ -67,7 +67,7 @@
         </div>
 
         <div class="select">
-          <select id="action-select" v-model="transactionModify.action" @change="checkAction">
+          <select id="action-select" v-model="transactionModify.action">
             <option value="" disabled selected hidden>TRANSACCIÓN</option>
             <option value="purchase">COMPRAR</option>
             <option value="sale">VENDER</option>
