@@ -23,7 +23,10 @@
             </select>
           </div>
         </div>
-
+        <div class="cant-wallet">
+          Criptos disponibles en la cuenta: 
+          <span class="money" v-if="selectedCryptoBalance !== null">{{ selectedCryptoBalance }}</span>
+        </div>
         <div class="select">
           <select
             id="agency-select"
@@ -64,7 +67,7 @@
         </div>
 
         <div class="select">
-          <select id="action-select" v-model="transactionModify.action">
+          <select id="action-select" v-model="transactionModify.action" @change="checkAction">
             <option value="" disabled selected hidden>TRANSACCIÓN</option>
             <option value="purchase">COMPRAR</option>
             <option value="sale">VENDER</option>
@@ -99,6 +102,7 @@ export default {
         datetime: "",
       },
       selectedAgency: "",
+      selectedCryptoBalance: null,
       agencies: [],
       selectAgenciesDisabled: true,
       setAmountDisabled: true,
@@ -129,6 +133,7 @@ export default {
   },
   methods: {
     edit() {
+      this.Loading = true;
       this.transactionModify.datetime = new Date();
       if (this.transactionModify.action === "sale") {
         const cryptoBalance = this.getAmountInWallet(this.transactionModify.crypto_code);
@@ -151,6 +156,9 @@ export default {
         })
         .catch(() => {
           toast.error("Error al editar la transacción");
+        })
+        .finally(() => {
+          this.Loading = false;
         });
     },
     cancel() {
@@ -161,10 +169,11 @@ export default {
     },
     getAmountInWallet(crypto_code) {
       const inWallet = this.wallet.find((entry) => entry.crypto_code === crypto_code);
-      return inWallet ? parseFloat(inWallet.crypto_amount) : 0;
+      return inWallet ? parseFloat(inWallet.crypto_amount).toFixed(8) : 0;
     },
     getAgencies(crypto) {
       this.selectAgenciesDisabled = true;
+      this.selectedCryptoBalance = this.getAmountInWallet(crypto);
       CriptoApi.getAgenciesInformation(crypto)
         .then((res) => {
           this.agencies = Object.keys(res.data).map((agency, index) => {
@@ -217,7 +226,13 @@ export default {
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
-  
+.cant-wallet {
+  color: #d4af37;
+  margin: 5px 0;
+}
+.money {
+  color: white;
+}
 form {
   display: flex;
   flex-direction: column;
