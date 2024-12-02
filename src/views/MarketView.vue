@@ -53,7 +53,7 @@
 
 <script>
 import apiMarket from "../services/apiMarket"; 
-import Navbar from "@/components/NavBar.vue";
+import Navbar from "../components/NavBar.vue";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 

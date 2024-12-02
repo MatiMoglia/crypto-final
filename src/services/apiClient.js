@@ -1,5 +1,5 @@
 import axios from "axios";
-import store from "@/store";
+import store from "../store";
 
 const clienteAPI = axios.create({
   baseURL: "https://labor3-d60e.restdb.io/rest/",
@@ -13,8 +13,8 @@ export default {
     getTransactionsById(id) {
         return clienteAPI.get(`/transactions/${id}`);
     },
-    newTransaction(buySale) {
-        return clienteAPI.post("/transactions", buySale);
+    newTransaction(transaction) {
+        return clienteAPI.post("/transactions", transaction);
     },
     editTransaction(id, transactionModify) {
         return clienteAPI.patch(`/transactions/${id}`, transactionModify)

@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import ClientApi from '@/services/apiClient.js';
+import ClientApi from '../services/apiClient.js';
 
 export default createStore({
   state: {
@@ -59,9 +59,5 @@ export default createStore({
         state.transactions.splice(index, 1, updatedTransaction);
       }
     },
-  },
-  actions: {
-  },
-  modules: {
-  },
+  }
 });

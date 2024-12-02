@@ -26,10 +26,10 @@
 </template>
 
 <script>
-  import FormPurchase from "@/components/PurchaseForm.vue";
-  import FormSale from "@/components/SaleForm.vue";
-  import Navbar from "@/components/NavBar.vue";
-  import CriptosCard from "@/components/CriptosCard.vue";
+  import FormPurchase from "../components/PurchaseForm.vue";
+  import FormSale from "../components/SaleForm.vue";
+  import Navbar from "../components/NavBar.vue";
+  import CriptosCard from "../components/CriptosCard.vue";
   import apiMarket from "../services/apiMarket";
   import { toast } from "vue3-toastify";
   import "vue3-toastify/dist/index.css";

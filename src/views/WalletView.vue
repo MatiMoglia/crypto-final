@@ -41,8 +41,8 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Navbar from "@/components/NavBar.vue";
-import apiCripto from "@/services/apiCripto";
+import Navbar from "../components/NavBar.vue";
+import apiCripto from "../services/apiCripto";
 import Chart from "chart.js/auto";
 
 export default {

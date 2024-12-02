@@ -84,8 +84,8 @@
 
 <script>
 import { mapGetters } from "vuex";
-import ClientApi from "@/services/apiClient";
-import CriptoApi from "@/services/apiCripto";
+import ClientApi from "../services/apiClient";
+import CriptoApi from "../services/apiCripto";
 import { toast } from "vue3-toastify"; 
 import "vue3-toastify/dist/index.css";
 
