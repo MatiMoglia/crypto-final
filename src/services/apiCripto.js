@@ -6,12 +6,6 @@ const apiClient = axios.create({
 });
 
 export default {
-    getCompraVentaCriptomoneda(exchange, coin) {
-      return apiClient.get(`/${exchange}/${coin}/ars/0.01`);
-    },
-    getPrecioMoneda(coin) {
-      return apiClient.get(`/letsbit/${coin}`);
-    },
     getAgenciesInformation(coin) {
       return apiClient.get(`/${coin}/ars/1`);
     },

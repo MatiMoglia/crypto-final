@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import ClientApi from '../services/apiClient.js';
+import ClientApi from '../services/apiTransactions.js';
 
 export default createStore({
   state: {

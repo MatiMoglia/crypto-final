@@ -12,7 +12,7 @@
 
 <script>
   export default {
-    name: "CryptoCard",
+    name: "CriptoCard",
     props: {
       coin: {
         type: Object,

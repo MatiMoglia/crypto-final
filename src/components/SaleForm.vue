@@ -76,7 +76,7 @@
 </template>  
 
 <script>
-  import ClientApi from "../services/apiClient";
+  import ClientApi from "../services/apiTransactions";
   import CriptoApi from "../services/apiCripto";
   import { mapGetters } from "vuex";
   import { toast } from "vue3-toastify";

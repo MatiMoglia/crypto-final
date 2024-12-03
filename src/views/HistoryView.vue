@@ -73,9 +73,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-import ClientApi from '../services/apiClient.js';
+import ClientApi from '../services/apiTransactions.js';
 import Navbar from "../components/NavBar.vue";
-import TransactionDetails from "@/components/TransactionDetails.vue";
+import TransactionDetails from "../components/TransactionDetails.vue";
 
 export default {
   name: "History",

@@ -46,7 +46,7 @@ import apiCripto from "../services/apiCripto";
 import Chart from "chart.js/auto";
 
 export default {
-  name: "CurrentStatus",
+  name: "Wallet",
   components: { Navbar },
   data() {
     return {
@@ -106,60 +106,10 @@ export default {
         },
       });
     },
-  },renderChart() {
-  const canvas = document.getElementById("cryptoChart");
-  if (!canvas) {
-    console.error("El elemento <canvas> no está en el DOM.");
-    return;
-  }
-
-  const context = canvas.getContext("2d");
-  if (!context) {
-    console.error("No se pudo obtener el contexto del canvas.");
-    return;
-  }
-
-  const labels = this.wallet
-    .filter((coin) => coin.crypto_amount > 0)
-    .map((coin) => this.nameCriptos(coin.crypto_code));
-  const data = this.currentMoney;
-
-  if (this.chart) this.chart.destroy();
-
-  this.chart = new Chart(context, {
-    type: "doughnut",
-    data: {
-      labels,
-      datasets: [
-        {
-          label: "Composición de la Cartera",
-          data,
-          backgroundColor: [
-            "#ff6384",
-            "#36a2eb",
-            "#ffcd56",
-            "#4bc0c0",
-            "#9966ff",
-            "#ff9f40",
-          ],
-          hoverOffset: 4,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: "top",
-        },
-      },
-    },
-  });
-},
+  },
   async mounted() {
     try {
       const cryptoData = {};
-
       for (const coin of this.wallet) {
         const res = await apiCripto.getPriceMoney(coin.crypto_code);
         const data = {
@@ -167,23 +117,20 @@ export default {
           money: parseFloat(coin.money),
           actualPrice: res.data.totalBid,
         };
-
         cryptoData[coin.crypto_code] = data;
-
         if (data.crypto_amount > 0) {
           const valueMoney = +(data.crypto_amount * data.actualPrice).toFixed(2);
           this.currentMoney.push(valueMoney);
           this.actualTotalMoney += valueMoney;
         }
       }
-
-      this.loading = false;
-
-      this.$nextTick(() => {
-        this.renderChart();
-      });
-    } catch (error) {
-      console.error("Error fetching data:", error);
+        this.loading = false;
+        this.$nextTick(() => {
+          this.renderChart();
+        });
+      }
+      catch (error) {
+      console.error(error);
       this.loading = false;
     }
   }
