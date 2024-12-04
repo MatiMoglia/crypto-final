@@ -12,29 +12,23 @@ export default createStore({
     },
     getCurrentStatus: (state) => {
       const wallet = [];
+    
       state.transactions.forEach((transaction) => {
-        const index = wallet.findIndex((element) => element.crypto_code == transaction.crypto_code);
-        if (index == -1) {
-          if (transaction.action == "sale") {
-            const negativeTransaction = { ...transaction };
-            negativeTransaction.crypto_amount = -parseFloat(negativeTransaction.crypto_amount);
-            negativeTransaction.money = -parseFloat(negativeTransaction.money);
-            const { crypto_amount, crypto_code, money } = negativeTransaction;
-            wallet.push({ crypto_amount, crypto_code, money });
-          } else {
-            const { crypto_amount, crypto_code, money } = transaction;
-            wallet.push({ crypto_amount, crypto_code, money });
-          }
+        const { crypto_code, crypto_amount, money, action } = transaction;
+        if (!crypto_code || isNaN(crypto_amount) || isNaN(money)) return;
+
+        const index = wallet.findIndex((item) => item.crypto_code === crypto_code);
+        const amountChange = action === "sale" ? -parseFloat(crypto_amount) : parseFloat(crypto_amount);
+        const moneyChange = action === "sale" ? -parseFloat(money) : parseFloat(money);
+    
+        if (index === -1) {
+          wallet.push({ crypto_code, crypto_amount: amountChange, money: moneyChange });
         } else {
-          if (transaction.action == "purchase") {
-            wallet[index].crypto_amount += parseFloat(transaction.crypto_amount);
-            wallet[index].money += parseFloat(transaction.money);
-          } else {
-            wallet[index].crypto_amount -= parseFloat(transaction.crypto_amount);
-            wallet[index].money -= parseFloat(transaction.money);
-          }
+          wallet[index].crypto_amount += amountChange;
+          wallet[index].money += moneyChange;
         }
       });
+    
       return wallet;
     },
   },

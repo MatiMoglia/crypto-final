@@ -283,7 +283,6 @@ h1 {
   overflow: hidden; 
 }
 
-/* Botones */
 .btn {
   padding: 8px 15px;
   font-size: 0.9rem;
